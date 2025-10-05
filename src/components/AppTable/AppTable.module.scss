@@ -1,0 +1,50 @@
+/* stylelint-disable */
+.customTable {
+  :global {
+    .ant-table-pagination {
+      @apply px-8 py-0;
+    }
+
+    .ant-table {
+      @apply overflow-hidden rounded-tl-2xl rounded-tr-2xl;
+    }
+
+    .ant-table-row {
+      &.highlighted {
+        .ant-table-cell {
+          @apply bg-[--color-primary-light];
+        }
+      }
+    }
+  }
+
+  &.simpleTable {
+    :global {
+      .ant-table,
+      .ant-table-cell {
+        border-radius: 0 !important;
+      }
+    }
+  }
+
+  &.rowSelectionTable {
+    :global {
+      .ant-table {
+        .ant-table-thead,
+        .ant-table-tbody {
+          .ant-table-cell {
+            &:first-child {
+              @apply py-4 pl-6 pr-0;
+            }
+          }
+        }
+      }
+
+      .ant-table-selection-col {
+        @apply w-10;
+      }
+    }
+  }
+}
+
+/* stylelint-enable */

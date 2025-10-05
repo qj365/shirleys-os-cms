@@ -1,0 +1,79 @@
+.userAvatarWrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(255 255 255 / 65%);
+  transition: all ease 0.2s;
+
+  &:hover {
+    background-color: rgb(255 255 255 / 20%);
+    transition: all ease 0.2s;
+  }
+}
+
+.invertColor {
+  @apply text-gray-600;
+
+  &.invertColorDarkMode {
+    @apply text-slate-400;
+  }
+}
+
+.fixedHeader {
+  transition: width ease 0.2s;
+  height: 64px;
+  background-color: #fff;
+  border-bottom: 1px solid rgb(237 242 247);
+  box-shadow: 0 0 20px rgb(0 0 0 / 8%);
+  padding: 0 32px 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
+  column-gap: 12px;
+}
+
+.pageContentWrapper {
+  height: calc(100vh - 64px);
+  overflow: hidden auto;
+  background: var(--bg-dark);
+  display: flex;
+  flex-direction: column;
+}
+
+.mainSidebarWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4rem;
+  width: 28rem;
+  background-color: var(--color-accent);
+  padding: 1.6rem 0 2.4rem;
+  height: 100%;
+  overflow: hidden auto;
+  transition: width ease 0.2s;
+  position: relative;
+  z-index: 1;
+
+  &.collapsed {
+    width: 0;
+  }
+}
+
+.mainPageContentWrapper {
+  width: calc(100% - 28rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden auto;
+  transition: width ease 0.2s;
+
+  @apply h-screen;
+
+  &.collapsed {
+    width: 100%;
+  }
+}

@@ -1,0 +1,10 @@
+.fieldset {
+  padding: 10px;
+  border: 1px solid #d9d9d9;
+
+  @apply rounded-lg;
+
+  legend {
+    @apply mb-0 ml-1 inline-block w-auto border-0 px-1 text-sm font-semibold;
+  }
+}

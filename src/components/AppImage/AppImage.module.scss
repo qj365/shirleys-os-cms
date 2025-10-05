@@ -1,0 +1,9 @@
+.appImage {
+  @apply h-full w-full;
+
+  :global {
+    .ant-image {
+      @apply h-full w-full;
+    }
+  }
+}

@@ -1,0 +1,56 @@
+:root {
+  /** Main palette */
+  --color-primary-light: #f7f5ed;
+  --color-primary: #cb9408;
+  --color-accent: #10162b;
+
+  /** Colors */
+  --color-secondary-light: #a4a4a6;
+  --color-secondary: #1e293b;
+  --color-info-lighter: #cafdf5;
+  --color-info-light: #61f3f3;
+  --color-info: #00b8d9;
+  --color-info-dark: #006c9c;
+  --color-info-darker: #003768;
+  --color-success-lighter: #d8fbde;
+  --color-success-light: #86e8ab;
+  --color-success: #36b37e;
+  --color-success-dark: #1b806a;
+  --color-success-darker: #0a5554;
+  --color-warning-lighter: #fff5cc;
+  --color-warning-light: #ffd666;
+  --color-warning: #ffab00;
+  --color-warning-dark: #b76e00;
+  --color-warning-darker: #7a4100;
+  --color-error-lighter: #ffe9d5;
+  --color-error-light: #ffac82;
+  --color-error: #de4d4d;
+  --color-error-dark: #b71d18;
+  --color-error-darker: #7a0916;
+
+  /** Background */
+  --bg-dark: #f2f2f2;
+  --table-heading-color: #ececec;
+  --bg-gray: #edf2f7;
+
+  /** Typography */
+  --font-sans:
+    'raleway', -apple-system, blinkmacsystemfont, 'Segoe UI', roboto,
+    'Helvetica Neue', arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
+  --text-color-default: #1e293b;
+  --text-color-light: #a9a9a9;
+
+  /** Border */
+  --border-color: #e9e9e9;
+
+  /** Shadow */
+  --wrapper-shadow:
+    rgb(145 158 171 / 20%) 0px 0px 2px 0px,
+    rgb(145 158 171 / 12%) 0px 12px 24px -4px;
+
+  /** Custom color */
+  --silver: #c3c3c3;
+  --catskill-white: #eff1f7;
+  --alto: #d9d9d9;
+}
