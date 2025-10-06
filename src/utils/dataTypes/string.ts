@@ -1,3 +1,5 @@
+import { message } from 'antd';
+
 export const trimmedSpacesKeyword = (keyword?: string) => {
   if (!keyword) return '';
   return keyword.trim().replace(/ +(?= )/g, '');
@@ -65,4 +67,14 @@ export const formatDisplayCurrency = (
   return price !== undefined
     ? new Intl.NumberFormat(locale, config).format(price)
     : '-';
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const toastErrorMessage = (error: any) => {
+  console.log('Error: ', JSON.stringify(error || {}));
+  void message.error(
+    error?.body?.details ||
+      error?.body?.message ||
+      'An error occurred, please try again later.'
+  );
 };

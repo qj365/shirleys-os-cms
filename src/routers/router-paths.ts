@@ -4,6 +4,14 @@ const publicPaths = {
 
 const privatePaths = {
   portal: () => '/',
+
+  /**product-management **/
+  productCategoriesPage: (query?: string) =>
+    `/product-management/categories${query ? `?${query}` : ''}`,
+  productListPage: (query?: string) =>
+    `/product-management/products${query ? `?${query}` : ''}`,
+  productDetailPage: (productId: string) =>
+    `/product-management/products/${productId}`,
 };
 
 const pathsMap = {
@@ -17,7 +25,7 @@ export const getPath = <TRoute extends keyof PathsMap>(
   route: TRoute,
   ...params: Parameters<PathsMap[TRoute]>
 ) => {
-  const pathCb: (...args: Parameters<PathsMap[TRoute]>) => string =
-    pathsMap[route];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const pathCb: (...args: any[]) => string = pathsMap[route];
   return pathCb(...params);
 };

@@ -1,8 +1,8 @@
 import { Button, Result } from 'antd';
-import notFoundBanner from 'assets/svg/404.svg';
-import AppHelmet from 'components/AppHelmet/AppHelmet';
+import notFoundBanner from '@/assets/svg/404.svg';
+import AppHelmet from '@/components/AppHelmet/AppHelmet';
 import { useNavigate } from 'react-router-dom';
-import { getPath } from 'routers/router-paths';
+import { getPath } from '@/routers/router-paths';
 
 const NotFoundPage = () => {
   const navigate = useNavigate();

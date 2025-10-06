@@ -1,13 +1,13 @@
 import type { Rule } from 'antd/es/form';
-import EditableCell from 'components/AppTable/EditableCell';
-import EditableRow from 'components/AppTable/EditableRow';
+import EditableCell from '@/components/AppTable/EditableCell';
+import EditableRow from '@/components/AppTable/EditableRow';
 import type {
   TCellEditState,
   TEditableTableColumn,
-} from 'components/AppTable/types';
+} from '@/components/AppTable/types';
 import { useEffect, useMemo, useState } from 'react';
-import { messageUtils } from 'utils';
-import type { ObjectType } from 'utils/types';
+import type { ObjectType } from '@/utils/types';
+import { message } from 'antd';
 
 type EditableCellHelperProps<T> = {
   commonColumns: TEditableTableColumn<T>[];
@@ -29,8 +29,6 @@ function useEditableCellHelper<T>({
     dataIndex: undefined,
     recordKey: undefined,
   });
-
-  const { message } = messageUtils;
 
   const tableColumns = useMemo(
     (): TEditableTableColumn<T>[] =>
@@ -68,7 +66,7 @@ function useEditableCellHelper<T>({
   useEffect(() => {
     if (!isSuccess) return;
     void message.success(`Cập nhật thành công`);
-  }, [isSuccess, message]);
+  }, [isSuccess]);
 
   const tableComponents = {
     body: {

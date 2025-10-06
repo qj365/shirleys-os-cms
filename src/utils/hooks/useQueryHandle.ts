@@ -1,14 +1,14 @@
 import qs from 'qs';
 import { useCallback, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import type { ObjectType } from 'utils/types';
+import type { ObjectType } from '@/utils/types';
 
 type QueryHandleProps = {
   noPagination?: boolean;
 };
 
-export const DefaultPageIndex = 1;
-export const DefaultPageSize = 10;
+export const DEFAULT_PAGE_INDEX = 1;
+export const DEFAULT_PAGE_SIZE = 10;
 
 const useQueryHandle = <T extends ObjectType>(props?: QueryHandleProps) => {
   const { noPagination } = props || {};
@@ -27,8 +27,8 @@ const useQueryHandle = <T extends ObjectType>(props?: QueryHandleProps) => {
 
   const paginationData = useMemo(
     () => ({
-      pageIndex: pageIndex ? +pageIndex : DefaultPageIndex,
-      pageSize: pageSize ? +pageSize : DefaultPageSize,
+      pageIndex: pageIndex ? +pageIndex : DEFAULT_PAGE_INDEX,
+      pageSize: pageSize ? +pageSize : DEFAULT_PAGE_SIZE,
     }),
     [pageIndex, pageSize]
   );
@@ -38,7 +38,7 @@ const useQueryHandle = <T extends ObjectType>(props?: QueryHandleProps) => {
       const queryPayload = qs.stringify({
         ...values,
         ...(!noPagination && {
-          pageIndex: DefaultPageIndex,
+          pageIndex: DEFAULT_PAGE_INDEX,
           pageSize: paginationData.pageSize,
         }),
       });
@@ -68,7 +68,7 @@ const useQueryHandle = <T extends ObjectType>(props?: QueryHandleProps) => {
       if (size === paginationData.pageSize) return;
       const queryPayload = qs.stringify({
         ...queryParams,
-        pageIndex: DefaultPageIndex,
+        pageIndex: DEFAULT_PAGE_INDEX,
         pageSize: size,
       });
       navigate(`${pathName}?${queryPayload}`);

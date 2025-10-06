@@ -13,11 +13,11 @@ type AppHelmetProps = {
 const AppHelmet: FunctionComponent<AppHelmetProps> = props => {
   const { title, description = '', keywords, type = '', name = '' } = props;
   const SEOKeywords = useMemo(
-    () => keywords || 'Shirleys Food CMS',
+    () => keywords || 'Shirleys Food Manager',
     [keywords]
   );
 
-  const appName = 'Shirleys Food CMS';
+  const appName = 'Shirleys Food Manager';
 
   const pageTitle = title ? `${appName} - ${title}` : appName;
 

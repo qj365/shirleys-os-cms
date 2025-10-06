@@ -1,6 +1,6 @@
 import type { GetProp, UploadFile, UploadProps } from 'antd';
 import { message } from 'antd';
-import type { ObjectType } from 'utils/types';
+import type { ObjectType } from '@/utils/types';
 
 export type TFileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 export type TFileUpload = UploadFile<ObjectType>;

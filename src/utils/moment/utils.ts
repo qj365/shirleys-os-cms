@@ -1,8 +1,8 @@
 import type { RangePickerProps } from 'antd/es/date-picker';
 import type { ConfigType } from 'dayjs';
 import { Dayjs } from 'dayjs';
-import dayjs from 'utils/moment/dayjsConfig';
-import type { ObjectType } from 'utils/types';
+import dayjs from '@/utils/moment/dayjsConfig';
+import type { ObjectType } from '@/utils/types';
 
 export const DefaultDateFormat = 'DD/MM/YYYY';
 export const DefaultDateTimeFormat = 'DD/MM/YYYY, HH:mm';

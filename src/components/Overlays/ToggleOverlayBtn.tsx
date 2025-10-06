@@ -1,6 +1,6 @@
 import type { MouseEventHandler, PropsWithChildren } from 'react';
 import { cloneElement, isValidElement } from 'react';
-import type { ObjectType } from 'utils/types';
+import type { ObjectType } from '@/utils/types';
 
 type ToggleOverlayBtnProps = PropsWithChildren & {
   onClick: MouseEventHandler<HTMLElement>;

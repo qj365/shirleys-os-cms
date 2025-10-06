@@ -1,22 +1,16 @@
-import { message } from 'antd';
+import favicon from '@/assets/favicons/favicon-32x32.png';
+import ScrollRestoration from '@/components/ScrollRestoration';
+import SplashScreen from '@/components/SplashScreen';
+import AppRouterConfig from '@/routers/AppRouterConfig';
 import ConfigProvider from 'antd/es/config-provider';
 import en_US from 'antd/es/locale/en_US';
 import theme from 'antd/es/theme';
-import favicon from 'assets/favicons/favicon-32x32.png';
-import ScrollRestoration from 'components/ScrollRestoration';
-import SplashScreen from 'components/SplashScreen';
-import { appPrimaryColorSelector } from 'features/appInfo/selectors';
-import { useAppSelector } from 'lib/stores';
 import { Suspense, useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
-import AppRouterConfig from 'routers/AppRouterConfig';
-import { messageUtils } from 'utils';
+import { useAppInfoStore } from './lib/stores/appInfoStore';
 
 function App() {
-  const [messageApi, contextHolder] = message.useMessage();
-  messageUtils.message = messageApi;
-
-  const appPrimaryColor = useAppSelector(appPrimaryColorSelector);
+  const { appPrimaryColor } = useAppInfoStore();
 
   useEffect(() => {
     const link = document.createElement('link');
@@ -56,7 +50,6 @@ function App() {
           }}
           router={AppRouterConfig}
         />
-        {contextHolder}
       </Suspense>
     </ConfigProvider>
   );

@@ -1,21 +1,24 @@
+import AppPaperBox from '@/components/AppPaperBox';
+import useQueryHandle from '@/utils/hooks/useQueryHandle';
 import type { TableProps } from 'antd';
 import { Table } from 'antd';
+import type { ColumnGroupType, ColumnType } from 'antd/es/table';
 import clsx from 'clsx';
-import AppPaperBox from 'components/AppPaperBox';
 import { useMemo } from 'react';
-import useQueryHandle from 'utils/hooks/useQueryHandle';
 import style from './AppTable.module.scss';
 
-type AppTableProps = TableProps & {
+interface AppTableProps<T> extends TableProps<T> {
+  columns: (ColumnType<T> | ColumnGroupType<T>)[];
   totalCount?: number;
   mode?: 'page' | 'simple';
-};
+}
 
-const AppTable = ({
+export const AppTable = <T,>({
+  columns,
   totalCount,
   mode = 'page',
   ...tableProps
-}: AppTableProps) => {
+}: AppTableProps<T>) => {
   const {
     handleChangePageSize,
     handleChangePageIndex,
@@ -23,11 +26,8 @@ const AppTable = ({
   } = useQueryHandle();
 
   const tableScrollWidth = useMemo(() => {
-    return tableProps?.columns?.reduce(
-      (acc, cur) => acc + ((cur.width as number) ?? 0),
-      0
-    );
-  }, [tableProps.columns]);
+    return columns?.reduce((acc, cur) => acc + ((cur.width as number) ?? 0), 0);
+  }, [columns]);
 
   return (
     <AppPaperBox
@@ -55,6 +55,7 @@ const AppTable = ({
           ...tableProps.pagination,
         }}
         scroll={{ x: tableScrollWidth }}
+        columns={columns}
         {...tableProps}
       />
     </AppPaperBox>

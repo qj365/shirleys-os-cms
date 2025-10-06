@@ -15,7 +15,11 @@ export default function getConfig({ mode }: ObjectType) {
     define: {
       // Provide an explicit app-level constant derived from an env var.
       __APP_ENV__: JSON.stringify(env.APP_ENV),
+      'process.env': {
+        NEXT_PUBLIC_API_URL: env.VITE_APP_BASE_API_URL,
+      },
     },
+
     plugins: [
       react({
         babel: {

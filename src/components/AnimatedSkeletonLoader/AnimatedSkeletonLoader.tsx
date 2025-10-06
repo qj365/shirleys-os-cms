@@ -1,5 +1,5 @@
 import { Skeleton } from 'antd';
-import { fillArrayWithNumber } from 'utils/dataTypes/array';
+import { fillArrayWithNumber } from '@/utils/dataTypes/array';
 
 type AnimatedSkeletonLoaderProps = {
   rows?: number;

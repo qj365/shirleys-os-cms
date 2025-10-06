@@ -1,4 +1,4 @@
-import type { EditableRowProps } from 'components/AppTable/types';
+import type { EditableRowProps } from '@/components/AppTable/types';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const EditableRow = ({ index, ...props }: EditableRowProps) => {

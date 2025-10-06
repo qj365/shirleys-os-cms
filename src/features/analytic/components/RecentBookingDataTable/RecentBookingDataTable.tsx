@@ -1,12 +1,12 @@
-import AppPaperBox from 'components/AppPaperBox';
-import AppTable from 'components/AppTable/AppTable';
+import AppPaperBox from '@/components/AppPaperBox';
+import AppTable from '@/components/AppTable/AppTable';
 import sample from 'lodash/sample';
 import { memo } from 'react';
-import type { ObjectType } from 'utils/types';
+import type { ObjectType } from '@/utils/types';
 
 const RecentBookingDataTable = () => {
   return (
-    <AppPaperBox className="overflow-hidden rounded-2xl">
+    <AppPaperBox className="rounded-2xl">
       <AppTable
         columns={[
           {
@@ -32,7 +32,7 @@ const RecentBookingDataTable = () => {
           {
             title: 'Lịch trình',
             render: (record: ObjectType) => (
-              <p className="flex items-center gap-x-2 text-sm">
+              <p className="flex items-center gap-x-2 text-base">
                 {record.schedule}
                 <span className="font-bold">{record.route}</span>
               </p>

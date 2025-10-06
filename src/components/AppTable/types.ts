@@ -1,5 +1,5 @@
 import type { Rule } from 'antd/es/form';
-import type { ObjectType } from 'utils/types';
+import type { ObjectType } from '@/utils/types';
 import type { Dispatch, SetStateAction } from 'react';
 import type { ColumnsType } from 'antd/es/table';
 
