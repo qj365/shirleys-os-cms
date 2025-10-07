@@ -7,7 +7,7 @@ import type {
   UploadProps,
 } from 'antd/es/upload';
 import { useCallback, useState } from 'react';
-import type { ObjectType } from 'utils/types';
+import type { ObjectType } from '@/utils/types';
 import type { TFileUpload } from './helper';
 import {
   acceptedMIMETypes,

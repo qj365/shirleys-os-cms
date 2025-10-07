@@ -16,3 +16,7 @@ export type StrictUnion<T> = StrictUnionHelper<T, T>;
 export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
+
+export type TPageInfo = {
+  pageTitle: string;
+};

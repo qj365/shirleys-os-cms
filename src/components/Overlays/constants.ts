@@ -1,1 +1,1 @@
-export const DefaultOverlayPanelWidth = 640;
+export const DEFAULT_PANEL_WIDTH = 640;

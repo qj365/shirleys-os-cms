@@ -1,12 +1,8 @@
-import loginBanner from 'assets/svg/login.svg';
+import logo from '@/assets/logos/logo_full.webp';
+import loginBanner from '@/assets/images/login-banner.png';
 import clsx from 'clsx';
-import { isAuthenticatedSelector } from 'features/auth/selector';
-import { useAppSelector } from 'lib/stores';
 import type { PropsWithChildren, ReactNode } from 'react';
-import { memo, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getPath } from 'routers/router-paths';
-import logo from 'assets/logos/logo_full.webp';
+import { memo } from 'react';
 
 type AuthLayoutProps = PropsWithChildren & {
   title: string;
@@ -14,15 +10,15 @@ type AuthLayoutProps = PropsWithChildren & {
 };
 
 const AuthLayout = ({ children, title, subTitle }: AuthLayoutProps) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const isAuthenticated = useAppSelector(isAuthenticatedSelector);
+  // const isAuthenticated = useAppSelector(isAuthenticatedSelector);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate(getPath('portal'));
-    }
-  }, [isAuthenticated, navigate]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate(getPath('portal'));
+  //   }
+  // }, [isAuthenticated, navigate]);
 
   return (
     <div className="flex min-h-screen w-full overflow-x-hidden">
@@ -33,7 +29,7 @@ const AuthLayout = ({ children, title, subTitle }: AuthLayoutProps) => {
         )}
       >
         <div className="max-w-80 flex-1">
-          <figure className="mb-5 h-[34px] w-[100px]">
+          <figure className="mb-5 h-[44px] w-[150px]">
             <img
               src={logo}
               alt="Shirleys Food CMS"
@@ -44,17 +40,18 @@ const AuthLayout = ({ children, title, subTitle }: AuthLayoutProps) => {
           <h1 className="text-default mb-6 text-[36px] font-extrabold">
             {title}
           </h1>
-          {subTitle && <div className="mb-7.5 text-sm">{subTitle}</div>}
+          {subTitle && <div className="mb-7.5 text-base">{subTitle}</div>}
           {children}
         </div>
       </section>
       <section
         className={clsx(
-          'relative flex w-1/2 items-center justify-center bg-[--bg-dark] px-28 py-16',
+          'relative flex h-screen w-1/2 items-center justify-center bg-[--bg-dark]',
           'max-1024:hidden'
         )}
       >
-        <img src={loginBanner} alt="" className="h-100 w-100" />
+        <div className="absolute left-0 top-0 z-[1] h-full w-full bg-black/20" />
+        <img src={loginBanner} alt="" className="h-full w-full object-cover" />
       </section>
     </div>
   );

@@ -16,15 +16,11 @@ export type TRoute = {
   breadcrumbs?: TBreadcrumb[];
 };
 
-export type TPageInfo = {
-  pageTitle: string;
-};
-
 export const publicRoutes: TRoute[] = [
   {
     path: getPath('login'),
     element: createElement(
-      lazyImport(() => import('modules/Auth/LoginPage')),
+      lazyImport(() => import('@/modules/Auth/LoginPage')),
       { pageTitle: 'Login Page' }
     ),
   },
@@ -34,8 +30,39 @@ export const privateRoutes: TRoute[] = [
   {
     path: getPath('portal'),
     element: createElement(
-      lazyImport(() => import('modules/Miscellaneous/PortalPage')),
+      lazyImport(() => import('@/modules/Miscellaneous/PortalPage')),
       { pageTitle: 'Portal Page' }
+    ),
+  },
+
+  {
+    path: getPath('productCategoriesPage'),
+    element: createElement(
+      lazyImport(() => import('@/modules/ProductManagement/CategoryListPage')),
+      { pageTitle: 'Product Categories' }
+    ),
+  },
+
+  {
+    path: getPath('productListPage'),
+    element: createElement(
+      lazyImport(() => import('@/modules/ProductManagement/ProductListPage')),
+      { pageTitle: 'Product List' }
+    ),
+  },
+
+  {
+    path: getPath('productListPage'),
+    element: createElement(
+      lazyImport(() => import('@/modules/ProductManagement/ProductListPage')),
+      { pageTitle: 'Product List' }
+    ),
+  },
+
+  {
+    path: getPath('productDetailPage', ':productId'),
+    element: createElement(
+      lazyImport(() => import('@/modules/ProductManagement/ProductDetailPage'))
     ),
   },
 ];

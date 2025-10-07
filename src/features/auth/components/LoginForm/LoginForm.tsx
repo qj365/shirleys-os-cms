@@ -1,76 +1,69 @@
-import { Button, Checkbox, Form, Input } from 'antd';
-import {
-  FORM_FIELD,
-  FormLabels,
-  FormValidations,
-} from 'features/auth/components/LoginForm/constants';
-import { useSignInUserMutation } from 'features/auth/query';
-import { updateAuthStore } from 'features/auth/slice';
-import type { TUserSignInPayload } from 'features/auth/types';
-import { useAppDispatch } from 'lib/stores';
-import { useCallback, useEffect, useState } from 'react';
+import { _36_Enums_UserRole, api } from '@/lib/api/admin';
+import { useAuthStore } from '@/lib/stores/authStore';
+import { getPath } from '@/routers/router-paths';
+import type { ObjectType } from '@/utils/types';
+import { Button, Form, Input, message } from 'antd';
+import { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getPath } from 'routers/router-paths';
 
 const LoginForm = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const [isRememberLogin, setIsRememberLogin] = useState(true);
 
-  const [userLoginMutationFn, { isLoading, data: userSignInResponse }] =
-    useSignInUserMutation();
+  const { login, logout } = useAuthStore();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = useCallback(
-    (payload: TUserSignInPayload) => {
-      userLoginMutationFn(payload);
+    async (payload: ObjectType) => {
+      try {
+        setIsLoading(true);
+        const { email, password } = payload || {};
+        await login(email, password);
+
+        const response = await api.admin.adminGetMe();
+
+        if (response?.role === _36_Enums_UserRole.ADMIN) {
+          navigate(getPath('portal'), {
+            replace: true,
+          });
+
+          void message.success('Login successfully');
+        } else {
+          message.warning('Permission denied');
+          await logout();
+        }
+      } catch {
+        void message.error(
+          'Login failed, please check your login information and try again later'
+        );
+      } finally {
+        setIsLoading(false);
+      }
     },
-    [userLoginMutationFn]
+    [login, logout, navigate]
   );
-
-  useEffect(() => {
-    if (userSignInResponse?.data) {
-      const { accessToken, refreshToken, agentUser } =
-        userSignInResponse?.data || {};
-
-      dispatch(
-        updateAuthStore({
-          refreshToken,
-          accessToken,
-          user: agentUser,
-        })
-      );
-
-      navigate(getPath('portal'));
-    }
-  }, [dispatch, navigate, userSignInResponse?.data]);
 
   return (
     <Form form={form} layout="vertical" onFinish={handleLogin}>
       <Form.Item
-        name={FORM_FIELD.USERNAME}
-        label={FormLabels[FORM_FIELD.USERNAME]}
-        rules={FormValidations[FORM_FIELD.USERNAME]}
+        name="email"
+        label="Email"
+        rules={[{ required: true, whitespace: true }]}
       >
-        <Input placeholder={FormLabels[FORM_FIELD.USERNAME]} />
+        <Input placeholder="Email" />
       </Form.Item>
 
       <Form.Item
-        name={FORM_FIELD.PASSWORD}
-        label={FormLabels[FORM_FIELD.PASSWORD]}
-        rules={FormValidations[FORM_FIELD.PASSWORD]}
+        name="password"
+        label="Password"
+        rules={[{ required: true, whitespace: true }]}
       >
-        <Input.Password placeholder={FormLabels[FORM_FIELD.PASSWORD]} />
+        <Input.Password placeholder="Password" />
       </Form.Item>
 
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <Checkbox
-          checked={isRememberLogin}
-          onChange={e => setIsRememberLogin(e.target.checked)}
-        >
-          Remember me
-        </Checkbox>
-        <Link to="" className="text-sm hover:text-primary">
+      <div className="mb-4 flex items-center justify-end gap-4">
+        <Link to="#" className="text-base hover:text-primary">
           Forgot password?
         </Link>
       </div>

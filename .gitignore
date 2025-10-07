@@ -34,3 +34,6 @@ dist-ssr
 .env.production.local
 .env.deploy
 .env.deploy.override
+
+
+yarn.lock

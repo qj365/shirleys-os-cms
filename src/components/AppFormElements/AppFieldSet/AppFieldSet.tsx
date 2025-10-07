@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import styles from 'components/AppFormElements/AppFieldSet/AppFieldSet.module.scss';
+import styles from '@/components/AppFormElements/AppFieldSet/AppFieldSet.module.scss';
 import type { HTMLAttributes, PropsWithChildren, ReactNode } from 'react';
 
 type AppFieldSetProps = PropsWithChildren & {

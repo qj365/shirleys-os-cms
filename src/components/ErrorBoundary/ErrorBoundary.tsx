@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import clsx from 'clsx';
 import { useNavigate, useRouteError } from 'react-router-dom';
-import { getPath } from 'routers/router-paths';
+import { getPath } from '@/routers/router-paths';
 
 export default function ErrorBoundary() {
   const error = useRouteError();
@@ -19,7 +19,7 @@ export default function ErrorBoundary() {
             'mb-6 max-w-[64rem] p-6',
             'bg-error-lighter text-error',
             'border border-error',
-            'break-words text-sm',
+            'break-words text-base',
             'max-h-50 overflow-y-auto overflow-x-hidden rounded-xl'
           )}
         >

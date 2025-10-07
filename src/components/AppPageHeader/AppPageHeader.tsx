@@ -13,7 +13,7 @@ const AppPageHeader = ({ title, subtitle, addon }: AppPageHeaderProps) => {
         <h1 className="mb-0 text-2xl font-bold text-secondary dark:text-gray-200">
           {title}
         </h1>
-        {subtitle && <p className="text-sm text-gray-400">{subtitle}</p>}
+        {subtitle && <p className="text-base text-gray-400">{subtitle}</p>}
       </div>
       {addon}
     </div>

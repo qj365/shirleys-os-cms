@@ -1,16 +1,16 @@
 import CloseOutlined from '@ant-design/icons/CloseOutlined';
 import type { FormInstance } from 'antd';
 import { Button, Drawer, Form } from 'antd';
-import ConditionalWrap from 'components/ConditionalWrap';
+import ConditionalWrap from '@/components/ConditionalWrap';
 import type { ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import useQueryHandle from 'utils/hooks/useQueryHandle';
-import dayjs from 'utils/moment/dayjsConfig';
+import useQueryHandle from '@/utils/hooks/useQueryHandle';
+import dayjs from '@/utils/moment/dayjsConfig';
 import {
   convertDateStringToObjectDate,
   DefaultDateFormat,
-} from 'utils/moment/utils';
-import type { ObjectType } from 'utils/types';
+} from '@/utils/moment/utils';
+import type { ObjectType } from '@/utils/types';
 
 type AppPageHeaderFilterProps = {
   title: string;
@@ -82,7 +82,7 @@ const AppPageHeaderFilter = ({
     () =>
       !standaloneMode && (
         <Button type="default" onClick={() => setShowFilter(prev => !prev)}>
-          Tìm kiếm &amp; lọc
+          Search &amp; filter
         </Button>
       ),
     [standaloneMode, setShowFilter]
@@ -109,13 +109,16 @@ const AppPageHeaderFilter = ({
         footer={
           <div className="flex items-center justify-end gap-2 py-2">
             <Button
-              variant="outlined"
+              type="default"
               onClick={() => onClearFilter(customClearFilterCallbackFn)}
             >
-              Bỏ lọc
+              Reset
             </Button>
-            <Button onClick={() => submitBtnRef.current?.click()}>
-              Tìm kiếm
+            <Button
+              type="primary"
+              onClick={() => submitBtnRef.current?.click()}
+            >
+              Search
             </Button>
           </div>
         }

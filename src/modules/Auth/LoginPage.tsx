@@ -1,7 +1,7 @@
-import AppHelmet from 'components/AppHelmet/AppHelmet';
-import LoginForm from 'features/auth/components/LoginForm';
-import AuthLayout from 'layouts/AuthLayout';
-import type { TPageInfo } from 'routers/constants';
+import AppHelmet from '@/components/AppHelmet/AppHelmet';
+import LoginForm from '@/features/auth/components/LoginForm';
+import AuthLayout from '@/layouts/AuthLayout';
+import type { TPageInfo } from '@/utils/types';
 
 const LoginPage = ({ pageTitle }: TPageInfo) => {
   return (

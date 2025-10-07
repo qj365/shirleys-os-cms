@@ -4,11 +4,11 @@ import EditOutlined from '@ant-design/icons/EditOutlined';
 import type { InputRef } from 'antd';
 import { Button, Form, Input } from 'antd';
 import clsx from 'clsx';
-import NumericTooltipInput from 'components/AppFormElements/AppInput/NumericTooltipInput';
-import type { EditableCellProps } from 'components/AppTable/types';
+import NumericTooltipInput from '@/components/AppFormElements/AppInput/NumericTooltipInput';
+import type { EditableCellProps } from '@/components/AppTable/types';
 import type { PropsWithChildren } from 'react';
 import { useCallback, useEffect, useRef, type Ref } from 'react';
-import type { ObjectType } from 'utils/types';
+import type { ObjectType } from '@/utils/types';
 
 const EditableCell = ({
   editable,

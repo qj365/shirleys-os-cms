@@ -2,7 +2,7 @@ import type { FormItemProps, InputNumberProps, InputRef } from 'antd';
 import { Form, Input, Tooltip } from 'antd';
 import type { Rule } from 'rc-field-form/es/interface';
 import React, { useCallback, useMemo } from 'react';
-import { formatNumber } from 'utils/dataTypes/number';
+import { formatNumber } from '@/utils/dataTypes/number';
 
 type NumericTooltipInputProps = {
   tooltipMsg?: string;

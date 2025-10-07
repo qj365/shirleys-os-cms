@@ -1,13 +1,13 @@
 .ant-btn {
   span {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
   box-shadow: none;
 }
 
 .ant-checkbox-wrapper {
   * {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
 }
 
@@ -19,13 +19,13 @@
 .ant-input-suffix,
 .ant-input-prefix {
   svg {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
 }
 
 .ant-select-selection-placeholder,
 .ant-select-selection-search-input {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 
 .ant-modal-confirm-heading {
@@ -33,28 +33,8 @@
   align-items: center;
   column-gap: 5px;
 
-  span {
-    font-size: 14px;
-  }
-
   svg {
-    position: relative;
-    left: -2px;
-    width: 2.4rem;
-    height: 2.4rem;
-
-    &.icon-danger {
-      color: var(--color-error);
-    }
-
-    &.icon-primary {
-      color: var(--color-primary);
-    }
-
-    + span {
-      font-size: 1.6rem;
-      color: var(--text-color-default);
-    }
+    color: var(--color-error);
   }
 }
 
@@ -98,20 +78,20 @@
 
 .ant-select-item-option-content,
 .ant-select-selection-item {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 500 !important;
 }
 
 .ant-message-notice-content {
   .ant-message-custom-content {
     * {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
     }
   }
 }
 
 .ant-empty-description {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 
 .ant-modal-header {
@@ -123,7 +103,7 @@
 }
 
 .ant-modal-confirm-content {
-  font-size: 1.4rem !important;
+  font-size: 1.6rem !important;
 }
 
 .ant-modal-confirm-btns {
@@ -146,7 +126,7 @@
   .ant-table-thead {
     .ant-table-cell {
       border: none !important;
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       background: var(--table-heading-color);
 
       &:first-child {
@@ -165,7 +145,7 @@
     .ant-table-row {
       td {
         border-bottom: 1px solid var(--border-color);
-        font-size: 1.4rem;
+        font-size: 1.6rem;
 
         &:first-child {
           padding-left: 32px;
@@ -180,7 +160,7 @@
 }
 
 .ant-dropdown-menu-title-content {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 
 .ant-menu-item:active,
@@ -212,7 +192,7 @@
     }
 
     .ant-menu-title-content {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       font-weight: 500;
     }
   }
@@ -226,7 +206,7 @@
 
 .ant-pagination-item {
   a {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
 }
 

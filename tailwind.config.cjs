@@ -185,6 +185,9 @@ module.exports = {
       }),
       screens: {
         /** Min width */
+        'min-1441': {
+          min: '1441px',
+        },
         'min-1025': {
           min: '1025px',
         },

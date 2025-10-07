@@ -19,7 +19,11 @@ const AppTableActionMenu = ({
       trigger={['click']}
       overlayClassName={styles.appTableActionMenu}
     >
-      <Button type="text" htmlType="submit" icon={<MoreOutlined />} />
+      <Button
+        type="text"
+        icon={<MoreOutlined />}
+        className="[&_.anticon]:!text-xl"
+      />
     </Dropdown>
   );
 };

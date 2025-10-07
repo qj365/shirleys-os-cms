@@ -1,6 +1,6 @@
 .userAvatarWrapper {
-  width: 40px;
-  height: 40px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
@@ -9,6 +9,7 @@
   justify-content: center;
   color: rgb(255 255 255 / 65%);
   transition: all ease 0.2s;
+  border: 2px solid #666;
 
   &:hover {
     background-color: rgb(255 255 255 / 20%);
@@ -27,6 +28,7 @@
 .fixedHeader {
   transition: width ease 0.2s;
   height: 64px;
+  min-height: 64px;
   background-color: #fff;
   border-bottom: 1px solid rgb(237 242 247);
   box-shadow: 0 0 20px rgb(0 0 0 / 8%);
@@ -39,8 +41,6 @@
 }
 
 .pageContentWrapper {
-  height: calc(100vh - 64px);
-  overflow: hidden auto;
   background: var(--bg-dark);
   display: flex;
   flex-direction: column;
@@ -65,15 +65,23 @@
 }
 
 .mainPageContentWrapper {
-  width: calc(100% - 28rem);
   display: flex;
   flex-direction: column;
   overflow: hidden auto;
   transition: width ease 0.2s;
 
-  @apply h-screen;
+  @apply min-h-screen w-full min-1441:w-[calc(100%-28rem)];
 
   &.collapsed {
     width: 100%;
+  }
+}
+
+.mainMobileSidebarWrapper {
+  background-color: var(--color-accent) !important;
+  :global {
+    .ant-drawer-header {
+      display: none !important;
+    }
   }
 }
