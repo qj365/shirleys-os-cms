@@ -38,21 +38,21 @@
   justify-content: space-between;
   z-index: 100;
   column-gap: 12px;
+  position: sticky;
+  top: 0;
 }
 
 .pageContentWrapper {
   background: var(--bg-dark);
-  display: flex;
-  flex-direction: column;
+  @apply flex flex-1 flex-col;
 }
 
 .mainSidebarWrapper {
   display: flex;
   flex-direction: column;
-  row-gap: 4rem;
+  row-gap: 24px;
   width: 28rem;
-  background-color: var(--color-accent);
-  padding: 1.6rem 0 2.4rem;
+  padding-bottom: 2.4rem;
   height: 100%;
   overflow: hidden auto;
   transition: width ease 0.2s;
@@ -78,10 +78,22 @@
 }
 
 .mainMobileSidebarWrapper {
-  background-color: var(--color-accent) !important;
   :global {
     .ant-drawer-header {
       display: none !important;
     }
+    .ant-drawer-body {
+      padding: 0px;
+      padding-bottom: 16px;
+    }
+  }
+}
+
+.logoWrapper {
+  @apply flex !h-[64px] !min-h-[64px] items-center justify-between px-5;
+  border-bottom: 1px solid rgb(237 242 247);
+  box-shadow: 0 0 20px rgb(0 0 0 / 8%);
+  @media (max-width: 1440px) {
+    margin-bottom: 24px;
   }
 }

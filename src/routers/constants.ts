@@ -39,15 +39,7 @@ export const privateRoutes: TRoute[] = [
     path: getPath('productCategoriesPage'),
     element: createElement(
       lazyImport(() => import('@/modules/ProductManagement/CategoryListPage')),
-      { pageTitle: 'Product Categories' }
-    ),
-  },
-
-  {
-    path: getPath('productListPage'),
-    element: createElement(
-      lazyImport(() => import('@/modules/ProductManagement/ProductListPage')),
-      { pageTitle: 'Product List' }
+      { pageTitle: 'Product Category' }
     ),
   },
 

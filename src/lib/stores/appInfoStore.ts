@@ -8,12 +8,8 @@ interface AppInfoState {
   setSelectedMenuKeys: (keys: string[]) => void;
 }
 
-const isMobileDevice = () => {
-  return window?.matchMedia('(max-width: 1024px)')?.matches ?? true;
-};
-
 export const useAppInfoStore = create<AppInfoState>(set => ({
-  isSidebarCollapsed: isMobileDevice(),
+  isSidebarCollapsed: true,
   selectedMenuKeys: [],
   appPrimaryColor: '#cb9408',
   setSidebarCollapse: isCollapsed => set({ isSidebarCollapsed: isCollapsed }),

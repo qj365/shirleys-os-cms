@@ -1,5 +1,4 @@
-import avatar from '@/assets/images/admin.webp';
-import logo from '@/assets/logos/logo-white-icon.png';
+import logo from '@/assets/logos/logo_full.webp';
 import AppUserMenu from '@/components/AppUserMenu/AppUserMenu';
 import ScrollRestoration from '@/components/ScrollRestoration';
 import SplashScreen from '@/components/SplashScreen';
@@ -14,47 +13,34 @@ import { Suspense } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import AppMainSidebar from './AppMainSidebar';
 import style from './MainLayout.module.scss';
-import { useAuthStore } from '@/lib/stores/authStore';
 
 export default function MainLayout() {
   const navigate = useNavigate();
 
   const { isSidebarCollapsed, setSidebarCollapse } = useAppInfoStore();
 
-  const { appUser } = useAuthStore();
-
   const windowDimensions = useWindowDimensions();
 
   const isShowDesktopSidebar = windowDimensions?.width > 1440;
 
+  const handleClose = () => setSidebarCollapse(true);
+
   const sideBar = (
     <>
-      <div className="flex items-center justify-between px-5">
+      <div className={style.logoWrapper}>
         <figure
           className="mb-0 cursor-pointer"
           onClick={() => navigate(getPath('portal'))}
         >
-          <img src={logo} alt="logo" className="max-h-9 object-contain" />
+          <img src={logo} alt="logo" className="max-h-7 object-contain" />
         </figure>
+        {!isShowDesktopSidebar && (
+          <Button type="text" className="text-lg" onClick={handleClose}>
+            x
+          </Button>
+        )}
       </div>
-      <div className="flex flex-col items-center justify-center px-8 text-center">
-        <figure className="relative">
-          <img
-            src={avatar}
-            alt={'User avatar'}
-            className={clsx('block h-24 w-24 rounded-full object-cover')}
-          />
-          <figcaption
-            className={clsx(
-              'absolute left-1/2 -translate-x-1/2 -translate-y-1/2',
-              'rounded-full bg-primary px-2 py-1',
-              'whitespace-nowrap text-xs capitalize text-white'
-            )}
-          >
-            {appUser?.role?.toLowerCase()}
-          </figcaption>
-        </figure>
-      </div>
+
       <AppMainSidebar />
     </>
   );
@@ -63,18 +49,14 @@ export default function MainLayout() {
     <div className="flex h-screen">
       {isShowDesktopSidebar ? (
         <aside
-          className={clsx(
-            style.mainSidebarWrapper,
-            isSidebarCollapsed && style.collapsed,
-            '!hidden min-1441:!flex'
-          )}
+          className={clsx(style.mainSidebarWrapper, '!hidden min-1441:!flex')}
         >
           {sideBar}
         </aside>
       ) : (
         <Drawer
           open={!isSidebarCollapsed}
-          onClose={() => setSidebarCollapse(!isSidebarCollapsed)}
+          onClose={handleClose}
           placement="left"
           className={style.mainMobileSidebarWrapper}
         >
@@ -88,20 +70,31 @@ export default function MainLayout() {
           isSidebarCollapsed && style.collapsed
         )}
       >
-        <header className={style.fixedHeader}>
-          <Button
-            type="text"
-            icon={
-              isSidebarCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
-            }
-            onClick={() => setSidebarCollapse(!isSidebarCollapsed)}
-            className="mr-auto [&_.anticon]:!text-xl"
-          />
+        <header
+          className={clsx(
+            style.fixedHeader,
+            isShowDesktopSidebar && '!justify-end'
+          )}
+        >
+          {!isShowDesktopSidebar && (
+            <Button
+              type="text"
+              icon={
+                isSidebarCollapsed ? (
+                  <MenuUnfoldOutlined />
+                ) : (
+                  <MenuFoldOutlined />
+                )
+              }
+              onClick={() => setSidebarCollapse(!isSidebarCollapsed)}
+              className="mr-auto [&_.anticon]:!text-xl"
+            />
+          )}
           <AppUserMenu invertColor />
         </header>
 
         <section className={style.pageContentWrapper} id="main-layout">
-          <div className="mx-auto flex min-h-screen w-full flex-1 flex-col px-8 pb-8">
+          <div className="mx-auto flex w-full flex-1 flex-col px-8 py-6">
             <Suspense
               fallback={
                 <ScrollRestoration>

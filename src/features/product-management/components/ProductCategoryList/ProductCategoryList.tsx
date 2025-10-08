@@ -1,6 +1,4 @@
 import AppPageHeader from '@/components/AppPageHeader/AppPageHeader';
-import AppPageHeaderFilter from '@/components/AppPageHeaderFilter';
-import AppPaperBox from '@/components/AppPaperBox';
 import AppTable from '@/components/AppTable';
 import AppTableActionMenu from '@/components/AppTableActionMenu';
 import OverlayPanelWrapper from '@/components/Overlays/OverlayPanelWrapper';
@@ -10,9 +8,11 @@ import {
   type NumberedPagingResponse_AdminGetCategoriesResponse_Array_,
 } from '@/lib/api/admin';
 import { toastErrorMessage } from '@/utils/dataTypes/string';
-import useQueryHandle from '@/utils/hooks/useQueryHandle';
+import useDebounceSearch from '@/utils/hooks/useDebounceSearch';
+import useHandleDeleteRecord from '@/utils/hooks/useHandleDeleteRecord';
+import useHandlePagination from '@/utils/hooks/useHandlePagination';
 import type { TPageInfo } from '@/utils/types';
-import { Button, Form, Input, message } from 'antd';
+import { Button, Input, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import {
   isValidElement,
@@ -22,12 +22,14 @@ import {
   type ReactNode,
 } from 'react';
 import AddEditProductCategoryPanel from './AddEditProductCategoryPanel';
-import useHandleDeleteRecord from '@/utils/hooks/useHandleDeleteRecord';
 
 export default function ProductCategoryList({ pageTitle }: TPageInfo) {
   const [isLoading, setIsLoading] = useState(true);
 
-  const { queryParams } = useQueryHandle();
+  const { pageSize, pageIndex, handleChangePageSize, handleChangePageIndex } =
+    useHandlePagination();
+
+  const { searchKeyword, debounceSearchFn } = useDebounceSearch();
 
   const [getCategoriesResponse, setGetCategoriesResponse] =
     useState<NumberedPagingResponse_AdminGetCategoriesResponse_Array_ | null>(
@@ -44,7 +46,11 @@ export default function ProductCategoryList({ pageTitle }: TPageInfo) {
       setIsLoading(true);
 
       const response = await api.admin.adminCategoryGetAll({
-        ...queryParams,
+        pageSize,
+        page: pageIndex,
+        ...(searchKeyword && {
+          name: searchKeyword,
+        }),
       });
       setGetCategoriesResponse(response);
     } catch (err) {
@@ -52,7 +58,7 @@ export default function ProductCategoryList({ pageTitle }: TPageInfo) {
     } finally {
       setIsLoading(false);
     }
-  }, [queryParams]);
+  }, [pageIndex, pageSize, searchKeyword]);
 
   const handleViewDetail = (
     item: AdminGetCategoriesResponse,
@@ -148,44 +154,44 @@ export default function ProductCategoryList({ pageTitle }: TPageInfo) {
 
   return (
     <>
-      <AppPageHeader
-        title={pageTitle}
-        addon={
-          <div className="flex items-center justify-end gap-x-2">
-            <AppPageHeaderFilter
-              title="Search Category"
-              formElements={
-                <Form.Item name="name" label="Search keyword">
-                  <Input placeholder={'Search by category name'} allowClear />
-                </Form.Item>
-              }
-            />
+      <AppPageHeader title={pageTitle} />
 
-            <OverlayPanelWrapper
-              renderOverlayPanel={(open, setOpen) => (
-                <AddEditProductCategoryPanel
-                  open={open}
-                  setOpen={setOpen}
-                  onUpdateSuccess={handleGetCategories}
-                />
-              )}
-            >
-              <Button type="primary">Create Category</Button>
-            </OverlayPanelWrapper>
-          </div>
-        }
-      />
-
-      <AppPaperBox className="p-6">
-        <AppTable
-          rowKey={record => record.id}
-          dataSource={getCategoriesResponse?.data || []}
-          columns={tableColumns}
-          totalCount={getCategoriesResponse?.total || 0}
-          loading={isLoading}
-          mode="simple"
+      <div className="mb-6 flex items-center justify-between gap-x-2">
+        <Input
+          placeholder="Search by category name"
+          onChange={e => debounceSearchFn(e?.target?.value)}
+          allowClear
+          className="max-w-70"
         />
-      </AppPaperBox>
+        <OverlayPanelWrapper
+          renderOverlayPanel={(open, setOpen) => (
+            <AddEditProductCategoryPanel
+              open={open}
+              setOpen={setOpen}
+              onUpdateSuccess={handleGetCategories}
+            />
+          )}
+        >
+          <Button type="primary">Create Category</Button>
+        </OverlayPanelWrapper>
+      </div>
+
+      <AppTable
+        rowKey={record => record.id}
+        dataSource={getCategoriesResponse?.data || []}
+        columns={tableColumns}
+        loading={isLoading}
+        mode="page"
+        pagination={{
+          total: getCategoriesResponse?.total || 0,
+          current: pageIndex,
+          pageSize,
+          onChange: (p, ps) => {
+            handleChangePageIndex(p);
+            handleChangePageSize(ps);
+          },
+        }}
+      />
     </>
   );
 }
