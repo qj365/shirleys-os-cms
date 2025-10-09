@@ -1,11 +1,10 @@
-@use 'normalize';
+@use 'resetCss';
 @use 'base';
 @use 'variables';
 @use 'utilities';
 @use 'typography';
 @use 'progress';
 @use 'antd';
-@use 'ckEditor5';
 
 @tailwind base;
 @tailwind components;
@@ -26,4 +25,8 @@
     overflow-clip-margin: unset;
   }
   /* stylelint-enable */
+}
+
+.ck.ck-content {
+  min-height: 300px;
 }

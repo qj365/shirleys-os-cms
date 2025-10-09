@@ -1,4 +1,4 @@
-import AppPaperBox from '@/components/AppPaperBox';
+import AppTextEditorFormField from '@/components/AppTextEditor/AppTextEditorFormField';
 import { api } from '@/lib/api/admin';
 import { skuGenerator } from '@/utils/dataTypes/string';
 import type { ObjectType } from '@/utils/types';
@@ -8,7 +8,6 @@ import { Form, Input } from 'antd';
 import debounce from 'lodash/debounce';
 import { useEffect, useMemo } from 'react';
 import ProductCategorySelection from './ProductCategorySelection';
-import AppTextEditor from '@/components/AppTextEditor/AppTextEditor';
 
 const { useFormInstance } = Form;
 
@@ -60,66 +59,59 @@ export default function ProductDetailOverviewInfo() {
   }, [checkSKUDuplicate]);
 
   return (
-    <AppPaperBox className="p-4">
-      <h3 className="mb-4 line-clamp-2 text-lg font-semibold text-primary">
-        Overview Information
-      </h3>
-      <div className="grid grid-cols-12 gap-x-4">
-        <Form.Item
-          name="name"
-          label="Product name"
-          rules={[{ required: true }]}
-          className="col-span-12"
-        >
-          <Input showCount placeholder="Enter product name" maxLength={120} />
-        </Form.Item>
-        <Form.Item
-          name="sku"
-          label="SKU"
-          rules={[
-            {
-              validator: validateSKU,
-            },
-          ]}
-          className="col-span-4"
-          tooltip="Stock-Keeping Unit"
-        >
-          <Input
-            placeholder="Enter SKU"
-            maxLength={12}
-            suffix={
-              <ReloadOutlined
-                onClick={() => {
-                  form.setFieldValue('sku', skuGenerator(12));
-                  form.validateFields(['sku']);
-                }}
-              />
-            }
-          />
-        </Form.Item>
+    <div className="grid grid-cols-12 gap-x-4">
+      <Form.Item
+        name="name"
+        label="Product name"
+        rules={[{ required: true }]}
+        className="col-span-12"
+      >
+        <Input showCount placeholder="Enter product name" maxLength={120} />
+      </Form.Item>
+      <Form.Item
+        name="sku"
+        label="SKU"
+        rules={[
+          {
+            validator: validateSKU,
+          },
+        ]}
+        className="col-span-4"
+        tooltip="Stock-Keeping Unit"
+      >
+        <Input
+          placeholder="Enter SKU"
+          maxLength={12}
+          suffix={
+            <ReloadOutlined
+              onClick={() => {
+                form.setFieldValue('sku', skuGenerator(12));
+                form.validateFields(['sku']);
+              }}
+            />
+          }
+        />
+      </Form.Item>
 
-        <Form.Item
+      <Form.Item
+        name="categoryId"
+        label="Product category"
+        rules={[{ required: true }]}
+        className="col-span-8"
+      >
+        <ProductCategorySelection
           name="categoryId"
-          label="Product category"
-          rules={[{ required: true }]}
-          className="col-span-8"
-        >
-          <ProductCategorySelection
-            name="categoryId"
-            placeholder="Select category"
-            initialSearchKeyword=""
-          />
-        </Form.Item>
+          placeholder="Select category"
+          initialSearchKeyword=""
+        />
+      </Form.Item>
 
-        <Form.Item
-          name="description"
-          label="Description"
-          rules={[{ required: true }]}
-          className="col-span-12"
-        >
-          <AppTextEditor max={10000} placeholder="Enter product description" />
-        </Form.Item>
-      </div>
-    </AppPaperBox>
+      <AppTextEditorFormField
+        name="description"
+        label="Description"
+        rules={[{ required: true }]}
+        className="col-span-12 mb-6"
+      />
+    </div>
   );
 }

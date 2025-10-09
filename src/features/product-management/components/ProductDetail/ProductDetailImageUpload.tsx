@@ -160,7 +160,7 @@ export default function ProductDetailImageUpload({
               items={imageList.map(item => item.uid)}
               strategy={rectSortingStrategy}
             >
-              <div className="grid h-[165px] grid-cols-12 gap-8 overflow-y-auto rounded-[6px] border-[1px] border-dashed border-[#d9d9d9] p-4">
+              <div className="grid h-[300px] grid-cols-12 gap-8 overflow-y-auto rounded-[6px] border-[1px] border-dashed border-[#d9d9d9] p-4">
                 {imageList.map((item, index) => (
                   <div
                     key={item.uid}
@@ -257,14 +257,13 @@ export default function ProductDetailImageUpload({
           disabled={disabled}
           maxCount={uploadMaxCount}
           showUploadList={false}
-          className="[&_div.ant-upload-list]:mt-6"
         >
           <Flex
             gap={4}
             vertical
             justify="center"
             align="center"
-            className="group relative min-h-[165px] bg-white"
+            className="group relative min-h-[165px] bg-transparent"
             onDragOver={() => setIsDrag(true)}
             onDragLeave={() => setIsDrag(false)}
             onDrop={() => setIsDrag(false)}

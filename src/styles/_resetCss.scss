@@ -11,9 +11,6 @@ div,
 dl,
 dt,
 dd,
-ul,
-ol,
-li,
 h1,
 h2,
 h3,
@@ -40,6 +37,13 @@ td {
   box-sizing: border-box;
 }
 
+*,
+::before,
+::after {
+  border-width: 0;
+  border-style: solid;
+}
+
 main {
   display: block;
 }
@@ -47,13 +51,6 @@ main {
 table {
   border-spacing: 0;
   border-collapse: collapse;
-}
-
-*,
-::before,
-::after {
-  border-width: 0;
-  border-style: solid;
 }
 
 fieldset,
@@ -80,23 +77,6 @@ var {
 
 strong {
   font-weight: bold;
-}
-
-ul li {
-  list-style: none;
-}
-
-ol {
-  counter-reset: number;
-}
-
-ol li {
-  display: list-item;
-}
-
-ol li::before {
-  content: counter(number) '. ';
-  counter-increment: number;
 }
 
 caption,

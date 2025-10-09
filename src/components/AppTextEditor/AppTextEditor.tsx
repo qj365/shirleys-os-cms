@@ -3,9 +3,14 @@
 
 import { api } from '@/lib/api/admin';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@dropship-dev/bettamax-editor';
+import Editor from './Editor';
 
-const AppTextEditor = ({ placeholder, value, onChange, ...props }: any) => {
+import 'ckeditor5/ckeditor5.css';
+import { useRef } from 'react';
+
+const AppTextEditor = ({ value, placeholder, onBlur }: any) => {
+  const editorRef = useRef(null);
+
   function uploadAdapter(loader: { file: Promise<File> }) {
     return {
       upload: () => {
@@ -42,24 +47,27 @@ const AppTextEditor = ({ placeholder, value, onChange, ...props }: any) => {
       return uploadAdapter(loader);
     };
   }
+
   return (
     <CKEditor
-      disabled={props?.disable ?? false}
-      editor={ClassicEditor}
+      ref={editorRef}
+      onReady={editor => {
+        (editorRef as any).current = { editor };
+      }}
+      editor={Editor}
       data={value}
       config={{
         licenseKey: 'GPL',
         extraPlugins: [uploadPlugin],
         placeholder: placeholder ?? '',
       }}
-      onChange={(_, editor) => {
+      onBlur={(_, editor) => {
         const data = (editor as any)?.getData();
         const cleaned = data
           .replace(/\s+srcset="[^"]*"/g, '')
           .replace(/\s+sizes="[^"]*"/g, '');
-        onChange?.(cleaned);
+        onBlur?.(cleaned);
       }}
-      {...props}
     />
   );
 };
