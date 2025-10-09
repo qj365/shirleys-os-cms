@@ -29,7 +29,9 @@
     "react-helmet-async": "^2.0.5",
     "react-router-dom": "6.30.1",
     "uuid": "^13.0.0",
-    "zustand": "^5.0.8"
+    "zustand": "^5.0.8",
+    "@ckeditor/ckeditor5-react": "^6.3.0",
+    "@dropship-dev/bettamax-editor": "github:dropship-dev/bettamax-editor#build"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
