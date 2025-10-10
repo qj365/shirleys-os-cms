@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import AppIconButton from '@/components/AppIconButton';
 import { useProductDetailStore } from '@/lib/stores/productDetailStore';
 import {
   DndContext,
@@ -25,7 +24,7 @@ import {
   notification,
 } from 'antd';
 import clsx from 'clsx';
-import { Check, GripVertical, Pencil, Plus, Trash, X } from 'lucide-react';
+import { GripVertical, Plus, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 const DragHandle: React.FC<{ listeners: any; attributes: any }> = ({
@@ -63,7 +62,7 @@ const SortableItem: React.FC<{
   );
 };
 
-const ProductForm: React.FC = () => {
+const ProductDetailPropertyConfig: React.FC = () => {
   const {
     properties,
     addProperty,
@@ -105,7 +104,7 @@ const ProductForm: React.FC = () => {
     }
   };
 
-  const handleDelete = (index: number) => {
+  const handleDelete = (index: number, name: string) => {
     Modal.confirm({
       title: 'Delete property?',
       content: 'Are you sure you want to delete this property?',
@@ -114,7 +113,7 @@ const ProductForm: React.FC = () => {
       onOk: () => {
         deleteProperty(index);
         notification.info({
-          message: 'Property deleted',
+          message: `You've deleted property ${name}`,
           description: (
             <Button
               type="link"
@@ -150,6 +149,10 @@ const ProductForm: React.FC = () => {
 
   return (
     <div className="mb-6">
+      <label className="block pb-2">
+        <strong className="text-error">*</strong>Product Properties
+      </label>
+
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -167,7 +170,7 @@ const ProductForm: React.FC = () => {
                     size="small"
                     className={clsx(index !== properties.length - 1 && 'mb-6')}
                     title={
-                      <Space className="flex w-full items-center justify-between py-2">
+                      <Space className="flex w-full items-center justify-between py-3">
                         <div className="flex items-center gap-2">
                           {properties.length >= 2 && (
                             <DragHandle
@@ -185,58 +188,86 @@ const ProductForm: React.FC = () => {
                           {property.mode === 'edit' ? (
                             <>
                               <Space>
-                                <AppIconButton
+                                <Button
                                   disabled={
                                     !property.name ||
                                     property.values.length === 0
                                   }
                                   htmlType="button"
-                                  icon={
-                                    <Check
-                                      width={16}
-                                      height={16}
-                                      className={clsx(
-                                        property.name &&
-                                          property.values.length &&
-                                          '!text-primary'
-                                      )}
-                                    />
-                                  }
+                                  size="small"
+                                  type="primary"
                                   onClick={() => {
+                                    const viewModeProps = properties.filter(
+                                      p => p.mode === 'view'
+                                    );
+
+                                    const isDuplicateName = viewModeProps.some(
+                                      p =>
+                                        p.name.trim().toLowerCase() ===
+                                        property.name.trim().toLowerCase()
+                                    );
+
+                                    if (isDuplicateName) {
+                                      void message.error(
+                                        `Duplicate property name "${property.name}"`
+                                      );
+                                      return;
+                                    }
+
+                                    const currentPropertyValuesCount =
+                                      property.values.length;
+
+                                    const variantsCount =
+                                      properties
+                                        .filter(p => p.mode === 'view')
+                                        .reduce(
+                                          (acc, prop) =>
+                                            acc * (prop.values.length || 1),
+                                          1
+                                        ) * currentPropertyValuesCount;
+
+                                    if (variantsCount > 100) {
+                                      void message.error(
+                                        `Cannot create more than 100 variants. Please remove some properties!`
+                                      );
+
+                                      return;
+                                    }
+
                                     updateProperty(index, { mode: 'view' });
                                     setIsRefreshTemplates(true);
                                   }}
-                                />
+                                >
+                                  Done
+                                </Button>
+
                                 {properties.length > 1 && (
-                                  <AppIconButton
+                                  <Button
                                     htmlType="button"
-                                    icon={
-                                      <Trash
-                                        width={16}
-                                        height={16}
-                                        className="!text-error"
-                                      />
+                                    size="small"
+                                    type="default"
+                                    danger
+                                    onClick={() =>
+                                      handleDelete(index, property.name)
                                     }
-                                    onClick={() => handleDelete(index)}
-                                  />
+                                  >
+                                    Delete
+                                  </Button>
                                 )}
                               </Space>
                             </>
                           ) : (
                             <>
-                              <AppIconButton
+                              <Button
                                 htmlType="button"
-                                icon={
-                                  <Pencil
-                                    width={16}
-                                    height={16}
-                                    className="!text-primary"
-                                  />
-                                }
+                                size="small"
+                                type="primary"
                                 onClick={() =>
                                   updateProperty(index, { mode: 'edit' })
                                 }
-                              />
+                              >
+                                Edit
+                              </Button>
                             </>
                           )}
                         </div>
@@ -250,18 +281,20 @@ const ProductForm: React.FC = () => {
                         ))}
                       </div>
                     ) : (
-                      <>
-                        <div className="mb-6">
+                      <div className="space-y-4">
+                        <div>
                           <label className="block pb-2">
                             <strong className="text-error">*</strong>Property
                             name
                           </label>
                           <Input
-                            placeholder="Enter property name"
+                            placeholder="Eg. Color, Size, Material"
                             value={property.name}
                             onChange={e =>
                               updateProperty(index, { name: e.target.value })
                             }
+                            maxLength={20}
+                            showCount
                           />
                         </div>
                         <div>
@@ -271,6 +304,7 @@ const ProductForm: React.FC = () => {
                           </label>
                           <input
                             placeholder="Type value & press Enter to confirm a value"
+                            maxLength={30}
                             onKeyDown={e => {
                               if (e.key === 'Enter' && e.currentTarget.value) {
                                 e.preventDefault();
@@ -323,7 +357,16 @@ const ProductForm: React.FC = () => {
                                             className="ml-auto cursor-pointer"
                                             width={16}
                                             height={16}
-                                            onClick={() => handleDelete(index)}
+                                            onClick={() => {
+                                              const newValues =
+                                                property.values.filter(
+                                                  v => v !== val
+                                                );
+
+                                              updateProperty(index, {
+                                                values: newValues,
+                                              });
+                                            }}
                                           />
                                         </div>
                                       )}
@@ -334,7 +377,7 @@ const ProductForm: React.FC = () => {
                             </DndContext>
                           </div>
                         </div>
-                      </>
+                      </div>
                     )}
                   </Card>
                 )}
@@ -359,4 +402,4 @@ const ProductForm: React.FC = () => {
   );
 };
 
-export default ProductForm;
+export default ProductDetailPropertyConfig;

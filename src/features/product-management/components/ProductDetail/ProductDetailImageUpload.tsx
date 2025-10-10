@@ -1,10 +1,10 @@
 import { api } from '@/lib/api/admin';
 import { useProductDetailStore } from '@/lib/stores/productDetailStore';
 import type { ObjectType } from '@/utils/types';
+import CloseCircleFilled from '@ant-design/icons/CloseCircleFilled';
 import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import PlusOutlined from '@ant-design/icons/PlusOutlined';
 import UploadOutlined from '@ant-design/icons/UploadOutlined';
-import CloseCircleFilled from '@ant-design/icons/CloseCircleFilled';
 import {
   closestCenter,
   DndContext,
@@ -16,7 +16,6 @@ import {
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 import {
   Flex,
-  Form,
   Image,
   message,
   Upload,
@@ -32,9 +31,6 @@ import SortableImageItem from './SortableImageItem';
 export type TImageUploadMode = 'productMedia' | 'variantImage';
 
 type Props = {
-  name: string;
-  label: string;
-  required: boolean;
   uploadMaxCount?: number;
   maximumFileSize?: number;
   disabled?: boolean;
@@ -48,9 +44,6 @@ export type TFileUpload = UploadFile<ObjectType>;
 const acceptedMIMETypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
 export default function ProductDetailImageUpload({
-  name,
-  label,
-  required,
   uploadMaxCount = 50,
   maximumFileSize = 10,
   disabled = false,
@@ -87,8 +80,6 @@ export default function ProductDetailImageUpload({
     }
   };
 
-  const normFile = (e: ObjectType) => (Array.isArray(e) ? e : e?.fileList);
-
   const handleBeforeUpload = (file: FileType) => {
     const isValidType = acceptedMIMETypes.includes(file?.type || '');
 
@@ -109,7 +100,6 @@ export default function ProductDetailImageUpload({
   const handleChange: UploadProps['customRequest'] = async (
     info: ObjectType
   ) => {
-    console.log(info, 'info');
     if (imageList?.find(item => item?.name === info?.file.name)) {
       void message.error(`Already uploaded image ${info?.file?.name}`);
       return;
@@ -122,7 +112,6 @@ export default function ProductDetailImageUpload({
       const fileData = {
         uid: info?.file?.uid,
         name: info?.file?.name,
-        file: info?.file,
         url: uploadResponse,
       };
 
@@ -132,7 +121,7 @@ export default function ProductDetailImageUpload({
         onSelectImage?.(uploadResponse);
       }
     } catch {
-      void message.error('Upload failed, Please try again');
+      void message.error(`Failed to upload image ${info?.file?.name}`);
     } finally {
       setIsLoading(false);
     }
@@ -210,26 +199,10 @@ export default function ProductDetailImageUpload({
   }
 
   return (
-    <Form.Item
-      name={name}
-      label={label}
-      valuePropName="fileList"
-      getValueFromEvent={normFile}
-      rules={[
-        {
-          required: required,
-          message: 'Please Upload Product Image',
-        },
-        {
-          validator(_, value) {
-            if (required && (!value || value?.length <= 0)) {
-              return Promise.reject();
-            }
-            return Promise.resolve();
-          },
-        },
-      ]}
-    >
+    <div className="mb-6">
+      <label className="block pb-2">
+        <strong className="text-error">*</strong>Product Images
+      </label>
       {imageList?.length ? (
         <>
           <DndContext
@@ -333,6 +306,6 @@ export default function ProductDetailImageUpload({
           </Flex>
         </Dragger>
       )}
-    </Form.Item>
+    </div>
   );
 }

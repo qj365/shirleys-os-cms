@@ -37,9 +37,6 @@ const ProductDetailVariantImageUploadPanel = ({
       title={'Select file or Upload new'}
     >
       <ProductDetailImageUpload
-        label=""
-        name=""
-        required
         mode={'variantImage'}
         onSelectImage={handleSelectImage}
       />

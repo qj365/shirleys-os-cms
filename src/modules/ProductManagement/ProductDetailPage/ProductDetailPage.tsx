@@ -8,7 +8,8 @@ export default function ProductDetailPage() {
     productId: string;
   }>();
 
-  const pageTitle = productId === 'create' ? 'New Product' : 'Product Detail';
+  const pageTitle =
+    productId === 'create' ? 'Create a new product' : 'Product Detail';
 
   return (
     <>

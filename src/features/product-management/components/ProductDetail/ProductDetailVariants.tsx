@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import AppIconButton from '@/components/AppIconButton';
+import AppTable from '@/components/AppTable';
 import OverlayPanelWrapper from '@/components/Overlays/OverlayPanelWrapper';
 import { useProductDetailStore } from '@/lib/stores/productDetailStore';
-import { Checkbox, Image, InputNumber, Select, Space, Table } from 'antd';
+import { Checkbox, Image, InputNumber, Select, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import clsx from 'clsx';
 import { ChevronDown, Upload } from 'lucide-react';
@@ -21,6 +22,13 @@ interface VariantRow {
   displayKey?: string;
 }
 
+const bulkFiledOptions = [
+  { label: 'Price', value: 'price' },
+  { label: 'Compare at Price', value: 'compareAtPrice' },
+  { label: 'Stock', value: 'stock' },
+  { label: 'Image', value: 'image' },
+];
+
 export const ProductDetailVariants: React.FC = () => {
   const {
     variantOptions,
@@ -29,10 +37,14 @@ export const ProductDetailVariants: React.FC = () => {
     bulkUpdateVariants,
     isRefreshingTemplates,
   } = useProductDetailStore();
-  console.log('variants', variants);
+
   const [groupBy, setGroupBy] = useState<string>();
   const [filterValues, setFilterValues] = useState<string[]>([]);
   const [expandedRowKeys, setExpandedRowKeys] = useState<React.Key[]>([]);
+
+  const [selectedBulkField, setSelectedBulkField] = useState<string>(
+    bulkFiledOptions[0].value
+  );
 
   // Build groupBy select options
   const groupByOptions = variantOptions.map(opt => ({
@@ -117,6 +129,8 @@ export const ProductDetailVariants: React.FC = () => {
       })
       .filter(Boolean);
 
+    console.log('Grouped Data', groups, baseGroup);
+
     return groups;
   }, [filteredVariants, variantOptions, groupBy]);
 
@@ -126,7 +140,7 @@ export const ProductDetailVariants: React.FC = () => {
     }
   }, [groupedData]);
 
-  // const selectedIds = variants.filter(v => v.selected).map(v => v.id);
+  const selectedIds = variants.filter(v => v.selected).map(v => v.id);
 
   const allSelected = variants.length > 0 && variants.every(v => v.selected);
 
@@ -258,8 +272,12 @@ export const ProductDetailVariants: React.FC = () => {
     {
       title: 'Price',
       dataIndex: 'price',
-      render: (_, record: any) =>
-        record.isGroup ? null : (
+      render: (_, record: any) => {
+        if (record.isGroup) return null;
+
+        const errorMsg = validatePrice(record.price, record.compareAtPrice);
+
+        return (
           <InputNumber
             min={0}
             prefix="$"
@@ -268,19 +286,21 @@ export const ProductDetailVariants: React.FC = () => {
             stringMode
             value={record.price}
             onChange={val => updateVariant(record.id, { price: Number(val) })}
-            status={
-              validatePrice(record.price, record.compareAtPrice)
-                ? 'error'
-                : undefined
-            }
+            status={errorMsg ? 'error' : undefined}
+            placeholder="Enter amount"
           />
-        ),
+        );
+      },
     },
     {
       title: 'Compare at Price',
       dataIndex: 'compareAtPrice',
-      render: (_, record: any) =>
-        record.isGroup ? null : (
+      render: (_, record: any) => {
+        if (record.isGroup) return null;
+
+        const errorMsg = validateCompareAt(record.compareAtPrice, record.price);
+
+        return (
           <InputNumber
             min={0}
             prefix="$"
@@ -291,29 +311,100 @@ export const ProductDetailVariants: React.FC = () => {
             onChange={val =>
               updateVariant(record.id, { compareAtPrice: Number(val) })
             }
-            status={
-              validateCompareAt(record.compareAtPrice, record.price)
-                ? 'error'
-                : undefined
-            }
+            status={errorMsg ? 'error' : undefined}
+            placeholder="Enter amount"
           />
-        ),
+        );
+      },
     },
     {
       title: 'Stock',
       dataIndex: 'stock',
-      render: (_, record: any) =>
-        record.isGroup ? null : (
+
+      render: (_, record: any) => {
+        if (record.isGroup) return null;
+
+        const errorMsg = validateStock(record.stock);
+
+        return (
           <InputNumber
             min={0}
             max={99999}
             value={record.stock}
             onChange={val => updateVariant(record.id, { stock: Number(val) })}
-            status={validateStock(record.stock) ? 'error' : undefined}
+            status={errorMsg ? 'error' : undefined}
+            placeholder="Enter stock amount"
           />
-        ),
+        );
+      },
     },
   ];
+
+  const bulkFormField = useMemo(() => {
+    const onBlurInput = (e: React.FocusEvent<HTMLInputElement>) => {
+      const val = Number((e.target as HTMLInputElement).value);
+      if (isNaN(val)) return;
+      bulkUpdateVariants(selectedIds, { [selectedBulkField]: val });
+    };
+
+    switch (selectedBulkField) {
+      case 'price':
+      case 'compareAtPrice':
+        return (
+          <InputNumber
+            min={0}
+            prefix="$"
+            step={0.01}
+            precision={2}
+            stringMode
+            onBlur={onBlurInput}
+            onKeyDown={e => {
+              if (e.key === 'Enter') onBlurInput(e as any);
+            }}
+            className="w-50"
+            placeholder="Enter amount"
+          />
+        );
+
+      case 'stock':
+        return (
+          <InputNumber
+            min={0}
+            max={99999}
+            onBlur={onBlurInput}
+            onKeyDown={e => {
+              if (e.key === 'Enter') onBlurInput(e as any);
+            }}
+            className="w-50"
+            placeholder="Enter stock amount"
+          />
+        );
+
+      case 'image':
+        return (
+          <OverlayPanelWrapper
+            renderOverlayPanel={(open, setOpen) => (
+              <ProductDetailVariantImageUploadPanel
+                open={open}
+                setOpen={setOpen}
+                onSelectImage={imageUrl => {
+                  bulkUpdateVariants(selectedIds, {
+                    [selectedBulkField]: imageUrl,
+                  });
+                }}
+              />
+            )}
+          >
+            <div className="flex !h-10 !w-10 cursor-pointer items-center justify-center rounded bg-slate-300 hover:opacity-80">
+              <Upload width={16} height={16} className="text-primary" />
+            </div>
+          </OverlayPanelWrapper>
+        );
+
+      default:
+        return null;
+    }
+  }, [bulkUpdateVariants, selectedBulkField, selectedIds]);
 
   return (
     <div className="my-6">
@@ -341,12 +432,12 @@ export const ProductDetailVariants: React.FC = () => {
         />
       </Space>
 
-      <Table
+      <AppTable
         rowKey="key"
         columns={columns}
         dataSource={groupedData}
         pagination={false}
-        className="min-h-75"
+        className="[&_.ant-table-tbody]:min-h-50"
         loading={isRefreshingTemplates}
         expandable={{
           expandedRowKeys,
@@ -361,34 +452,25 @@ export const ProductDetailVariants: React.FC = () => {
             }
           },
         }}
+        mode="simple"
       />
 
-      {/* {selectedIds.length > 0 && (
-        <div className="mt-4 flex gap-2">
-          Auto-set to selected item
-          <Upload
-            showUploadList={false}
-            beforeUpload={file => {
-              const url = handleUpload(file);
-              bulkUpdateVariants(selectedIds, { image: url });
-              message.success('Bulk upload successful');
-              return false;
-            }}
-          >
-            <Button>Upload for Selected</Button>
-          </Upload>
-          <InputNumber
-            min={0}
-            prefix="$"
-            precision={2}
-            placeholder="Set price for selected"
-            onPressEnter={e => {
-              const val = Number((e.target as HTMLInputElement).value);
-              bulkUpdateVariants(selectedIds, { price: val });
-            }}
+      {selectedIds.length > 0 && (
+        <div className="mt-4 flex items-center justify-start gap-4">
+          <span>Auto-set to selected item</span>
+
+          <Select
+            options={bulkFiledOptions}
+            placeholder="Select field to bulk update"
+            value={selectedBulkField}
+            className="w-50"
+            onChange={setSelectedBulkField}
           />
+          <span>as</span>
+
+          {bulkFormField}
         </div>
-      )} */}
+      )}
     </div>
   );
 };

@@ -27,6 +27,17 @@
   /* stylelint-enable */
 }
 
-.ck.ck-content {
-  min-height: 300px;
+.ck.ck-content,
+.ck-source-editing-area {
+  height: 400px;
+  min-height: 400px;
+  overflow-y: auto;
+}
+
+.ck-source-editing-area textarea {
+  overflow-y: auto !important;
+}
+
+html {
+  scroll-behavior: smooth;
 }

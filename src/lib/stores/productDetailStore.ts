@@ -15,7 +15,7 @@ export interface ProductProperty {
   values: string[];
   mode: 'edit' | 'view';
 }
-interface Variant {
+export interface Variant {
   id: string;
   name: string;
   variantOptionIds: number[];
@@ -25,6 +25,7 @@ interface Variant {
   image: string;
   selected: boolean;
 }
+
 interface productDetailStore {
   imageList: UploadFile<ObjectType>[];
   setImageList: (imageList: UploadFile<ObjectType>[]) => void;
@@ -50,10 +51,22 @@ interface productDetailStore {
   bulkUpdateVariants: (ids: string[], patch: Partial<Variant>) => void;
 
   handleGetTemplateVariants: () => Promise<void>;
+
+  //reset store
+  resetProductDetailStore: () => void;
 }
 
 export const useProductDetailStore = create<productDetailStore>((set, get) => ({
   imageList: [],
+
+  properties: [{ id: 'p1', name: '', values: [], mode: 'edit' }],
+
+  lastDeleted: null,
+
+  variantOptions: [],
+  variants: [],
+  isRefreshingTemplates: false,
+
   setImageList: images => set({ imageList: images }),
   addImageList: imgs => {
     const currentImageList = get().imageList || [];
@@ -67,7 +80,7 @@ export const useProductDetailStore = create<productDetailStore>((set, get) => ({
 
     if (isUseAsVariantImage) {
       message.error(
-        'This image is being used as a variant image. Please remove it from variants first.'
+        'This image cannot be deleted because it is being used as a variant image'
       );
       return;
     }
@@ -77,12 +90,6 @@ export const useProductDetailStore = create<productDetailStore>((set, get) => ({
     );
     return set({ imageList: newImageList });
   },
-
-  //product property
-
-  properties: [{ id: 'p1', name: '', values: [], mode: 'edit' }],
-
-  lastDeleted: null,
 
   addProperty: () => {
     const props = get().properties;
@@ -137,9 +144,6 @@ export const useProductDetailStore = create<productDetailStore>((set, get) => ({
 
   //variant
 
-  variantOptions: [],
-  variants: [],
-  isRefreshingTemplates: false,
   setVariantOptions: opts => set({ variantOptions: opts }),
   setVariants: variants => set({ variants }),
 
@@ -195,4 +199,14 @@ export const useProductDetailStore = create<productDetailStore>((set, get) => ({
       set({ isRefreshingTemplates: false });
     }
   },
+  //reset store
+  resetProductDetailStore: () =>
+    set({
+      imageList: [],
+      properties: [{ id: 'p1', name: '', values: [], mode: 'edit' }],
+      lastDeleted: null,
+      variantOptions: [],
+      variants: [],
+      isRefreshingTemplates: false,
+    }),
 }));

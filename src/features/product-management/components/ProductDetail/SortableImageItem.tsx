@@ -22,7 +22,7 @@ export default function SortableImageItem({ id, children }: SortableItemProps) {
       style={style}
       {...attributes}
       {...listeners}
-      className="relative cursor-move touch-none"
+      className="relative cursor-all-scroll touch-none"
     >
       {children}
     </div>

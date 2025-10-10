@@ -63,8 +63,14 @@ export default function ProductDetailOverviewInfo() {
       <Form.Item
         name="name"
         label="Product name"
-        rules={[{ required: true }]}
-        className="col-span-12"
+        rules={[
+          {
+            required: true,
+            message: 'Please input name of product',
+            whitespace: true,
+          },
+        ]}
+        className="col-span-8"
       >
         <Input showCount placeholder="Enter product name" maxLength={120} />
       </Form.Item>
@@ -96,8 +102,13 @@ export default function ProductDetailOverviewInfo() {
       <Form.Item
         name="categoryId"
         label="Product category"
-        rules={[{ required: true }]}
-        className="col-span-8"
+        rules={[
+          {
+            required: true,
+            message: 'Please select Product category',
+          },
+        ]}
+        className="col-span-12"
       >
         <ProductCategorySelection
           name="categoryId"
@@ -109,7 +120,12 @@ export default function ProductDetailOverviewInfo() {
       <AppTextEditorFormField
         name="description"
         label="Description"
-        rules={[{ required: true }]}
+        rules={[
+          {
+            required: true,
+            message: 'Please input description of product',
+          },
+        ]}
         className="col-span-12 mb-6"
       />
     </div>
