@@ -1,4 +1,4 @@
-@use 'normalize';
+@use 'resetCss';
 @use 'base';
 @use 'variables';
 @use 'utilities';
@@ -25,4 +25,19 @@
     overflow-clip-margin: unset;
   }
   /* stylelint-enable */
+}
+
+.ck.ck-content,
+.ck-source-editing-area {
+  height: 400px;
+  min-height: 400px;
+  overflow-y: auto;
+}
+
+.ck-source-editing-area textarea {
+  overflow-y: auto !important;
+}
+
+html {
+  scroll-behavior: smooth;
 }

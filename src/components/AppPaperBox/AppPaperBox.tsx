@@ -22,7 +22,7 @@ const AppPaperBox = ({
   return (
     <div
       className={clsx(
-        'rounded-2xl bg-white dark:bg-[--table-heading-color]',
+        'rounded-xl bg-white dark:bg-[--table-heading-color]',
         className
       )}
       style={{

@@ -1,12 +1,13 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import type { ReactNode } from 'react';
 
 type SortableItemProps = {
   id: string;
-  content: string;
+  children: ReactNode;
 };
 
-export default function SortableItem({ id, content }: SortableItemProps) {
+export default function SortableImageItem({ id, children }: SortableItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
@@ -21,9 +22,9 @@ export default function SortableItem({ id, content }: SortableItemProps) {
       style={style}
       {...attributes}
       {...listeners}
-      className="flex h-full min-h-25 w-full cursor-move touch-none items-center justify-center rounded-lg border border-blue-300 bg-blue-100 p-4 text-center"
+      className="relative cursor-all-scroll touch-none"
     >
-      {content}
+      {children}
     </div>
   );
 }
