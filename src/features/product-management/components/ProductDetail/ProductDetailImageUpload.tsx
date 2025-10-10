@@ -29,6 +29,8 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import SortableImageItem from './SortableImageItem';
 
+export type TImageUploadMode = 'productMedia' | 'variantImage';
+
 type Props = {
   name: string;
   label: string;
@@ -36,6 +38,8 @@ type Props = {
   uploadMaxCount?: number;
   maximumFileSize?: number;
   disabled?: boolean;
+  mode?: TImageUploadMode;
+  onSelectImage?: (imageUrl: string) => void;
 };
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
@@ -50,6 +54,8 @@ export default function ProductDetailImageUpload({
   uploadMaxCount = 50,
   maximumFileSize = 10,
   disabled = false,
+  mode = 'productMedia',
+  onSelectImage,
 }: Props) {
   const [isDrag, setIsDrag] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -121,12 +127,87 @@ export default function ProductDetailImageUpload({
       };
 
       addImageList([fileData]);
+
+      if (mode === 'variantImage') {
+        onSelectImage?.(uploadResponse);
+      }
     } catch {
       void message.error('Upload failed, Please try again');
     } finally {
       setIsLoading(false);
     }
   };
+
+  const uploadButton = (
+    <button
+      style={{
+        border: 0,
+        background: 'none',
+        height: '100%',
+        width: '100%',
+        borderRadius: '8px',
+      }}
+      type="button"
+      onDragOver={() => {
+        setIsDrag(true);
+      }}
+      onDragLeave={() => setIsDrag(false)}
+      onDrop={() => setIsDrag(false)}
+      className="relative"
+    >
+      {isLoading ? (
+        <LoadingOutlined />
+      ) : (
+        <PlusOutlined className={`${isDrag ? 'pointer-events-none' : ''}`} />
+      )}
+      <div
+        style={{ marginTop: 8 }}
+        className={`${isDrag ? 'pointer-events-none' : ''}`}
+      >
+        Upload
+      </div>
+      <div
+        className={`pointer-events-none absolute right-0 top-0 hidden h-full w-full rounded-[8px] bg-slate-200 opacity-95 ${isDrag ? 'z-[1] !flex !items-center !justify-center' : ''}`}
+      >
+        Drop here
+      </div>
+    </button>
+  );
+
+  if (mode === 'variantImage') {
+    return (
+      <div className="grid grid-cols-4 gap-8 p-4">
+        {imageList.map(item => (
+          <div
+            key={item.uid}
+            className="hover:cursor-pointer"
+            onClick={() => onSelectImage?.(item?.url || '')}
+          >
+            <Image
+              preview={false}
+              className="!aspect-[4/4] !h-full rounded-[8px] object-cover"
+              loading="lazy"
+              src={item?.url}
+              wrapperClassName="h-full w-full"
+            />
+          </div>
+        ))}
+        {imageList?.length < uploadMaxCount && (
+          <Upload
+            multiple={false}
+            listType="picture-card"
+            maxCount={uploadMaxCount - imageList?.length}
+            beforeUpload={handleBeforeUpload}
+            customRequest={handleChange}
+            showUploadList={false}
+            accept={acceptedMIMETypes.join(', ')}
+          >
+            {uploadButton}
+          </Upload>
+        )}
+      </div>
+    );
+  }
 
   return (
     <Form.Item
@@ -170,17 +251,6 @@ export default function ProductDetailImageUpload({
                       <CloseCircleFilled
                         className="absolute -right-2 -top-2 z-[1] cursor-pointer !text-lg !text-error"
                         onClick={() => {
-                          // if (imageVariant?.find((ii) => ii === i.url)) {
-                          //   openNotification({
-                          //     status: "error",
-                          //     title:
-                          //       "This image cannot be deleted because it is being used as a variant image",
-                          //   })
-                          //   return
-                          // }
-                          // const newImageList = imageList.filter(
-                          //   item => item?.uid !== item.uid
-                          // );
                           removeImage(item);
                         }}
                       />
@@ -205,41 +275,7 @@ export default function ProductDetailImageUpload({
                     showUploadList={false}
                     accept={acceptedMIMETypes.join(', ')}
                   >
-                    <button
-                      style={{
-                        border: 0,
-                        background: 'none',
-                        height: '100%',
-                        width: '100%',
-                        borderRadius: '8px',
-                      }}
-                      type="button"
-                      onDragOver={() => {
-                        setIsDrag(true);
-                      }}
-                      onDragLeave={() => setIsDrag(false)}
-                      onDrop={() => setIsDrag(false)}
-                      className="relative"
-                    >
-                      {isLoading ? (
-                        <LoadingOutlined />
-                      ) : (
-                        <PlusOutlined
-                          className={`${isDrag ? 'pointer-events-none' : ''}`}
-                        />
-                      )}
-                      <div
-                        style={{ marginTop: 8 }}
-                        className={`${isDrag ? 'pointer-events-none' : ''}`}
-                      >
-                        Upload
-                      </div>
-                      <div
-                        className={`pointer-events-none absolute right-0 top-0 hidden h-full w-full rounded-[8px] bg-slate-200 opacity-95 ${isDrag ? 'z-[1] !flex !items-center !justify-center' : ''}`}
-                      >
-                        Drop here
-                      </div>
-                    </button>
+                    {uploadButton}
                   </Upload>
                 )}
               </div>

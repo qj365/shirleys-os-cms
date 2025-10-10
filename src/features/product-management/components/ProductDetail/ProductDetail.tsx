@@ -1,13 +1,14 @@
 import AppPaperBox from '@/components/AppPaperBox';
+import { getPath } from '@/routers/router-paths';
 import { skuGenerator } from '@/utils/dataTypes/string';
+import useSetSelectedMenuKeys from '@/utils/hooks/useSetSelectedMenuKeys';
 import type { ObjectType } from '@/utils/types';
 import { Checkbox, Form } from 'antd';
 import { useParams } from 'react-router-dom';
 import ProductDetailImageUpload from './ProductDetailImageUpload';
 import ProductDetailOverviewInfo from './ProductDetailOverviewInfo';
-import useSetSelectedMenuKeys from '@/utils/hooks/useSetSelectedMenuKeys';
-import { getPath } from '@/routers/router-paths';
 import ProductDetailPropertyConfig from './ProductDetailPropertyConfig';
+import { ProductDetailVariants } from './ProductDetailVariants';
 
 export default function ProductDetail() {
   const { productId } = useParams<{
@@ -54,6 +55,8 @@ export default function ProductDetail() {
           />
 
           <ProductDetailPropertyConfig />
+
+          <ProductDetailVariants />
 
           <Form.Item
             name="status"
