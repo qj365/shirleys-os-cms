@@ -266,4 +266,30 @@ export class ProductService {
       },
     });
   }
+  /**
+   * @returns any Ok
+   * @throws ApiError
+   */
+  public deleteProduct({
+    id,
+  }: {
+    id: number,
+  }): CancelablePromise<{
+    id: number;
+  }> {
+    return this.httpRequest.request({
+      method: 'DELETE',
+      url: '/admin/products/{id}',
+      path: {
+        'id': id,
+      },
+      errors: {
+        400: `Bad request`,
+        401: `Invalid token`,
+        403: `Forbidden`,
+        404: `Not found`,
+        500: `Internal server error`,
+      },
+    });
+  }
 }

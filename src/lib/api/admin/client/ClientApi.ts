@@ -7,6 +7,7 @@ import type { OpenAPIConfig } from './core/OpenAPI';
 import { FetchHttpRequest } from './core/FetchHttpRequest';
 import { AdminService } from './services/AdminService';
 import { CategoryService } from './services/CategoryService';
+import { CookingClassService } from './services/CookingClassService';
 import { HealthService } from './services/HealthService';
 import { ProductService } from './services/ProductService';
 import { UploadService } from './services/UploadService';
@@ -14,6 +15,7 @@ type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class ClientApi {
   public readonly admin: AdminService;
   public readonly category: CategoryService;
+  public readonly cookingClass: CookingClassService;
   public readonly health: HealthService;
   public readonly product: ProductService;
   public readonly upload: UploadService;
@@ -32,6 +34,7 @@ export class ClientApi {
     });
     this.admin = new AdminService(this.request);
     this.category = new CategoryService(this.request);
+    this.cookingClass = new CookingClassService(this.request);
     this.health = new HealthService(this.request);
     this.product = new ProductService(this.request);
     this.upload = new UploadService(this.request);

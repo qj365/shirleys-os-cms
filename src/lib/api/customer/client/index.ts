@@ -12,10 +12,17 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export { _36_Enums_ProductStatus } from './models/_36_Enums_ProductStatus';
 export { _36_Enums_UserRole } from './models/_36_Enums_UserRole';
+export type { AdminCreateCookingClassDto } from './models/AdminCreateCookingClassDto';
+export type { AdminCreateCookingClassScheduleDto } from './models/AdminCreateCookingClassScheduleDto';
 export type { AdminGetCategoriesDto } from './models/AdminGetCategoriesDto';
 export type { AdminGetCategoriesResponse } from './models/AdminGetCategoriesResponse';
+export type { AdminGetCookingClassByIdResponse } from './models/AdminGetCookingClassByIdResponse';
+export type { AdminGetCookingClassesDto } from './models/AdminGetCookingClassesDto';
+export type { AdminGetCookingClassesResponse } from './models/AdminGetCookingClassesResponse';
 export type { AdminGetMeResponse } from './models/AdminGetMeResponse';
 export type { AdminModifyCategoryDto } from './models/AdminModifyCategoryDto';
+export type { AdminUpdateCookingClassDto } from './models/AdminUpdateCookingClassDto';
+export type { AdminUpdateCookingClassScheduleDto } from './models/AdminUpdateCookingClassScheduleDto';
 export type { CreateProductDto } from './models/CreateProductDto';
 export type { CreateProductVariantDto } from './models/CreateProductVariantDto';
 export type { CreateUploadDto } from './models/CreateUploadDto';
