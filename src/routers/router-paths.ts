@@ -10,8 +10,8 @@ const privatePaths = {
     `/product-management/categories${query ? `?${query}` : ''}`,
   productListPage: (query?: string) =>
     `/product-management/products${query ? `?${query}` : ''}`,
-  productDetailPage: (productId: string) =>
-    `/product-management/products/${productId}`,
+  productDetailPage: (productId: string, query?: string) =>
+    `/product-management/products/${productId}${query ? `?${query}` : ''}`,
 };
 
 const pathsMap = {

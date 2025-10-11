@@ -99,7 +99,6 @@ Editor.defaultConfig = {
       '|',
       'link',
       'blockQuote',
-      'insertTable',
       'mediaEmbed',
       'horizontalLine',
       '|',

@@ -24,26 +24,33 @@ export interface Variant {
   stock: number;
   image: string;
   selected: boolean;
+  sku?: number;
 }
 
-interface productDetailStore {
+export interface ProductStoreState {
   imageList: UploadFile<ObjectType>[];
+  properties: ProductProperty[];
+  lastDeleted: { property: ProductProperty; index: number } | null;
+
+  variantOptions: PrismaJson_VariantOptions;
+  variants: Variant[];
+  isRefreshingTemplates: boolean;
+}
+
+interface ProductDetailStore extends ProductStoreState {
   setImageList: (imageList: UploadFile<ObjectType>[]) => void;
   addImageList: (imageList: UploadFile<ObjectType>[]) => void;
   removeImage: (image: UploadFile<ObjectType>) => void;
+
   //product property
-  properties: ProductProperty[];
-  lastDeleted: { property: ProductProperty; index: number } | null;
   addProperty: () => void;
   deleteProperty: (index: number) => void;
   restoreDeleted: () => void;
   updateProperty: (index: number, newProp: Partial<ProductProperty>) => void;
   reorderProperties: (from: number, to: number) => void;
   reorderValues: (propertyIndex: number, from: number, to: number) => void;
+
   //variant
-  variantOptions: PrismaJson_VariantOptions;
-  variants: Variant[];
-  isRefreshingTemplates: boolean;
   setVariantOptions: (opts: PrismaJson_VariantOptions) => void;
   setVariants: (variants: Variant[]) => void;
 
@@ -52,11 +59,20 @@ interface productDetailStore {
 
   handleGetTemplateVariants: () => Promise<void>;
 
-  //reset store
-  resetProductDetailStore: () => void;
+  //set all store
+  setProductDetailStore: (values: ProductStoreState) => void;
 }
 
-export const useProductDetailStore = create<productDetailStore>((set, get) => ({
+export const initProductDetailStoreValues: ProductStoreState = {
+  imageList: [],
+  properties: [{ id: 'p1', name: '', values: [], mode: 'edit' }],
+  lastDeleted: null,
+  variantOptions: [],
+  variants: [],
+  isRefreshingTemplates: false,
+};
+
+export const useProductDetailStore = create<ProductDetailStore>((set, get) => ({
   imageList: [],
 
   properties: [{ id: 'p1', name: '', values: [], mode: 'edit' }],
@@ -200,13 +216,8 @@ export const useProductDetailStore = create<productDetailStore>((set, get) => ({
     }
   },
   //reset store
-  resetProductDetailStore: () =>
+  setProductDetailStore: values =>
     set({
-      imageList: [],
-      properties: [{ id: 'p1', name: '', values: [], mode: 'edit' }],
-      lastDeleted: null,
-      variantOptions: [],
-      variants: [],
-      isRefreshingTemplates: false,
+      ...values,
     }),
 }));

@@ -29,7 +29,7 @@ const bulkFiledOptions = [
   { label: 'Image', value: 'image' },
 ];
 
-export const ProductDetailVariants: React.FC = () => {
+export const ProductDetailVariants = () => {
   const {
     variantOptions,
     variants,
@@ -129,8 +129,6 @@ export const ProductDetailVariants: React.FC = () => {
       })
       .filter(Boolean);
 
-    console.log('Grouped Data', groups, baseGroup);
-
     return groups;
   }, [filteredVariants, variantOptions, groupBy]);
 
@@ -152,8 +150,6 @@ export const ProductDetailVariants: React.FC = () => {
       { selected: checked }
     );
   };
-
-  // const handleUpload = (file: RcFile) => URL.createObjectURL(file);
 
   // --- Toggle group collapse ---
   const toggleGroup = (key: string) => {
@@ -455,22 +451,20 @@ export const ProductDetailVariants: React.FC = () => {
         mode="simple"
       />
 
-      {selectedIds.length > 0 && (
-        <div className="mt-4 flex items-center justify-start gap-4">
-          <span>Auto-set to selected item</span>
+      <div className="mt-4 flex items-center justify-start gap-4">
+        <span>Auto-set to selected item</span>
 
-          <Select
-            options={bulkFiledOptions}
-            placeholder="Select field to bulk update"
-            value={selectedBulkField}
-            className="w-50"
-            onChange={setSelectedBulkField}
-          />
-          <span>as</span>
+        <Select
+          options={bulkFiledOptions}
+          placeholder="Select field to bulk update"
+          value={selectedBulkField}
+          className="w-50"
+          onChange={setSelectedBulkField}
+        />
+        <span>as</span>
 
-          {bulkFormField}
-        </div>
-      )}
+        {bulkFormField}
+      </div>
     </div>
   );
 };

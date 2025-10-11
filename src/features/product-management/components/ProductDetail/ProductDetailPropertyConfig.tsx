@@ -27,6 +27,10 @@ import clsx from 'clsx';
 import { GripVertical, Plus, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
+type Props = {
+  isCreateNewProduct: boolean;
+};
+
 const DragHandle: React.FC<{ listeners: any; attributes: any }> = ({
   listeners,
   attributes,
@@ -62,7 +66,9 @@ const SortableItem: React.FC<{
   );
 };
 
-const ProductDetailPropertyConfig: React.FC = () => {
+const ProductDetailPropertyConfig: React.FC<Props> = ({
+  isCreateNewProduct,
+}) => {
   const {
     properties,
     addProperty,
@@ -265,6 +271,7 @@ const ProductDetailPropertyConfig: React.FC = () => {
                                 onClick={() =>
                                   updateProperty(index, { mode: 'edit' })
                                 }
+                                disabled={!isCreateNewProduct}
                               >
                                 Edit
                               </Button>
@@ -387,7 +394,7 @@ const ProductDetailPropertyConfig: React.FC = () => {
         </SortableContext>
       </DndContext>
 
-      {properties.length < 3 && (
+      {properties.length < 3 && isCreateNewProduct && (
         <Button
           type="dashed"
           block

@@ -16,7 +16,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@dropship-dev/bettamax-editor": "github:dropship-dev/bettamax-editor#build",
-    "@fontsource/raleway": "^5.2.8",
+    "@fontsource/manrope": "^5.2.8",
     "@tailwindcss/vite": "^4.1.13",
     "antd": "^5.27.4",
     "async-mutex": "^0.5.0",

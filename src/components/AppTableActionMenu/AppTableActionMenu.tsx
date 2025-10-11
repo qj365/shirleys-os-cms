@@ -1,6 +1,7 @@
-import MoreOutlined from '@ant-design/icons/MoreOutlined';
+import AppIconButton from '@/components/AppIconButton';
 import type { DropdownProps, MenuProps } from 'antd';
-import { Button, Dropdown } from 'antd';
+import { Dropdown } from 'antd';
+import { EllipsisVertical } from 'lucide-react';
 import styles from './AppTableActionMenu.module.scss';
 
 type AppTableActionMenuProps = {
@@ -19,10 +20,9 @@ const AppTableActionMenu = ({
       trigger={['click']}
       overlayClassName={styles.appTableActionMenu}
     >
-      <Button
+      <AppIconButton
         type="text"
-        icon={<MoreOutlined />}
-        className="[&_.anticon]:!text-xl"
+        icon={<EllipsisVertical width={20} height={20} />}
       />
     </Dropdown>
   );
