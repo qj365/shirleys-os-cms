@@ -29,6 +29,7 @@ export type { CreateUploadDto } from './models/CreateUploadDto';
 export type { Cursor } from './models/Cursor';
 export type { CursorPagingResponse_GetProductsByCategoryResponse_Array_ } from './models/CursorPagingResponse_GetProductsByCategoryResponse_Array_';
 export type { Dimension } from './models/Dimension';
+export type { GetAllProductsResponse } from './models/GetAllProductsResponse';
 export type { GetCategoriesResponse } from './models/GetCategoriesResponse';
 export type { GetProductBySlugResponse } from './models/GetProductBySlugResponse';
 export type { GetProductResponse } from './models/GetProductResponse';
