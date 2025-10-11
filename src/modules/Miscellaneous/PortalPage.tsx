@@ -1,9 +1,5 @@
 import AppHelmet from '@/components/AppHelmet/AppHelmet';
 import AppPageHeader from '@/components/AppPageHeader/AppPageHeader';
-import AppPaperBox from '@/components/AppPaperBox';
-import AnnuallyRevenueChart from '@/features/analytic/components/AnnuallyRevenueChart';
-import BookingByAirlinesChart from '@/features/analytic/components/BookingByAirlinesChart';
-import RecentBookingDataTable from '@/features/analytic/components/RecentBookingDataTable';
 import type { TPageInfo } from '@/utils/types';
 
 export default function PortalPage({ pageTitle }: TPageInfo) {
@@ -12,7 +8,7 @@ export default function PortalPage({ pageTitle }: TPageInfo) {
       <AppHelmet title={pageTitle} />
       <AppPageHeader title={pageTitle} />
 
-      <div className="mb-8 grid grid-cols-12 gap-x-8">
+      {/* <div className="mb-8 grid grid-cols-12 gap-x-8">
         <AppPaperBox className="col-span-3 p-6">
           <h2 className="mb-1 text-base font-semibold dark:text-gray-200">
             Biểu đồ đặt chỗ theo hãng
@@ -32,9 +28,9 @@ export default function PortalPage({ pageTitle }: TPageInfo) {
           </p>
           <AnnuallyRevenueChart />
         </AppPaperBox>
-      </div>
+      </div> */}
 
-      <RecentBookingDataTable />
+      {/* <RecentBookingDataTable /> */}
     </>
   );
 }

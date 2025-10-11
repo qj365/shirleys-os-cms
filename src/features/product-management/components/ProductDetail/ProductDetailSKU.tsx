@@ -72,7 +72,7 @@ export default function ProductDetailSKU({ isShowSKU }: Props) {
           validator: validateSKU,
         },
       ]}
-      className="col-span-4"
+      className="col-span-3"
       tooltip="Stock-Keeping Unit"
     >
       <Input

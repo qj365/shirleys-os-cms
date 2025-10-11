@@ -18,7 +18,7 @@ import { getPath } from '@/routers/router-paths';
 import { skuGenerator, toastErrorMessage } from '@/utils/dataTypes/string';
 import useSetSelectedMenuKeys from '@/utils/hooks/useSetSelectedMenuKeys';
 import type { ObjectType } from '@/utils/types';
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import { Button, Form, Input, message, Select } from 'antd';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
@@ -168,9 +168,7 @@ const ProductDetail = () => {
         name,
         description,
         categoryId,
-        status: status
-          ? _36_Enums_ProductStatus.ACTIVE
-          : _36_Enums_ProductStatus.INACTIVE,
+        status,
         images: imageList.map(img => img.url || ''),
         ...(isCreateNewProduct
           ? {
@@ -292,6 +290,7 @@ const ProductDetail = () => {
           isCreateNewProduct
             ? {
                 sku: skuGenerator(12),
+                status: _36_Enums_ProductStatus.ACTIVE,
               }
             : undefined
         }
@@ -308,7 +307,7 @@ const ProductDetail = () => {
                   whitespace: true,
                 },
               ]}
-              className="col-span-8"
+              className="col-span-6"
             >
               <Input
                 showCount
@@ -316,7 +315,29 @@ const ProductDetail = () => {
                 maxLength={120}
               />
             </Form.Item>
+
             <ProductDetailSKU isShowSKU={isCreateNewProduct} />
+
+            <Form.Item
+              name="status"
+              initialValue={true}
+              label="Product status"
+              rules={[
+                { required: true, message: 'Please select Product status' },
+              ]}
+              className="col-span-3"
+            >
+              <Select
+                placeholder="Select Product status"
+                options={[
+                  { label: 'Active', value: _36_Enums_ProductStatus.ACTIVE },
+                  {
+                    label: 'Inactive',
+                    value: _36_Enums_ProductStatus.INACTIVE,
+                  },
+                ]}
+              />
+            </Form.Item>
 
             <Form.Item
               name="categoryId"
@@ -365,15 +386,6 @@ const ProductDetail = () => {
 
           <p id="productVariants" className="h-2" />
           <ProductDetailVariants />
-
-          <Form.Item
-            name="status"
-            className="col-span-8"
-            valuePropName="checked"
-            initialValue={true}
-          >
-            <Checkbox>Public Product</Checkbox>
-          </Form.Item>
 
           <div className="flex justify-end gap-6">
             <Button
