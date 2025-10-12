@@ -59,6 +59,21 @@ export const privateRoutes: TRoute[] = [
   },
 
   {
+    path: getPath('orderListPage'),
+    element: createElement(
+      lazyImport(() => import('@/modules/ProductManagement/OrderListPage')),
+      { pageTitle: 'Order List' }
+    ),
+  },
+
+  {
+    path: getPath('orderDetailPage', ':orderId'),
+    element: createElement(
+      lazyImport(() => import('@/modules/ProductManagement/OrderDetailPage'))
+    ),
+  },
+
+  {
     path: getPath('notificationPage'),
     element: createElement(
       lazyImport(() => import('@/modules/Settings/NotificationPage')),

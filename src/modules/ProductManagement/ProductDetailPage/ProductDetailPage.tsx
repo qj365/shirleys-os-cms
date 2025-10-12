@@ -14,7 +14,7 @@ export default function ProductDetailPage() {
   return (
     <>
       <AppHelmet title={pageTitle} />
-      <AppPageHeader title={pageTitle} />
+      {/* <AppPageHeader title={pageTitle} /> */}
       <ProductDetail />
     </>
   );

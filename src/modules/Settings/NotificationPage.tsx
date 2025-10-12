@@ -91,7 +91,7 @@ export default function NotificationPage({ pageTitle }: TPageInfo) {
   return (
     <>
       <AppHelmet title={pageTitle} />
-      <AppPageHeader title={pageTitle} />
+      {/* <AppPageHeader title={pageTitle} /> */}
 
       <AppPaperBox className="p-6">
         <div className="mb-6">

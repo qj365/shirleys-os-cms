@@ -6,7 +6,7 @@ import {
   ChartColumnIncreasing,
   Cylinder,
   LayoutList,
-  Settings,
+  ShoppingCart,
 } from 'lucide-react';
 import type { MenuInfo } from 'rc-menu/es/interface';
 import { useCallback, useEffect } from 'react';
@@ -70,12 +70,19 @@ const AppMainSidebar = () => {
               label: 'Product',
               icon: <Cylinder className="shrink-0" width={20} height={20} />,
             },
+            {
+              key: getPath('orderListPage'),
+              label: 'Orders',
+              icon: (
+                <ShoppingCart className="shrink-0" width={20} height={20} />
+              ),
+            },
           ],
         },
         {
-          key: 'settings',
-          label: 'Setting',
-          icon: <Settings className="shrink-0" width={20} height={20} />,
+          key: 'Settings',
+          label: 'Settings',
+          type: 'group',
           children: [
             {
               key: getPath('notificationPage'),
