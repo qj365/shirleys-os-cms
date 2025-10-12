@@ -9,16 +9,20 @@ import { AdminService } from './services/AdminService';
 import { CategoryService } from './services/CategoryService';
 import { CookingClassService } from './services/CookingClassService';
 import { HealthService } from './services/HealthService';
+import { OrderService } from './services/OrderService';
 import { ProductService } from './services/ProductService';
 import { UploadService } from './services/UploadService';
+import { WebhookService } from './services/WebhookService';
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 export class ClientApi {
   public readonly admin: AdminService;
   public readonly category: CategoryService;
   public readonly cookingClass: CookingClassService;
   public readonly health: HealthService;
+  public readonly order: OrderService;
   public readonly product: ProductService;
   public readonly upload: UploadService;
+  public readonly webhook: WebhookService;
   public readonly request: BaseHttpRequest;
   constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = FetchHttpRequest) {
     this.request = new HttpRequest({
@@ -36,8 +40,10 @@ export class ClientApi {
     this.category = new CategoryService(this.request);
     this.cookingClass = new CookingClassService(this.request);
     this.health = new HealthService(this.request);
+    this.order = new OrderService(this.request);
     this.product = new ProductService(this.request);
     this.upload = new UploadService(this.request);
+    this.webhook = new WebhookService(this.request);
   }
 }
 
