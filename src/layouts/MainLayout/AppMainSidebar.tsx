@@ -30,7 +30,29 @@ const AppMainSidebar = () => {
   );
 
   useEffect(() => {
-    setSelectedMenuKeys([location.pathname]);
+    // Check if current path is a detail page and map it to its list page
+    const pathname = location.pathname;
+    
+    // Handle product detail pages -> highlight Product menu
+    if (pathname.startsWith(getPath('productListPage'))) {
+      setSelectedMenuKeys([getPath('productListPage')]);
+      return;
+    }
+    
+    // Handle order detail pages -> highlight Orders menu
+    if (pathname.startsWith(getPath('orderListPage'))) {
+      setSelectedMenuKeys([getPath('orderListPage')]);
+      return;
+    }
+    
+    // Handle category pages
+    if (pathname.startsWith(getPath('productCategoriesPage'))) {
+      setSelectedMenuKeys([getPath('productCategoriesPage')]);
+      return;
+    }
+    
+    // Default: use the exact pathname
+    setSelectedMenuKeys([pathname]);
   }, [location.pathname, setSelectedMenuKeys]);
 
   return (
