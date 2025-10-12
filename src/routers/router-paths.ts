@@ -12,6 +12,9 @@ const privatePaths = {
     `/product-management/products${query ? `?${query}` : ''}`,
   productDetailPage: (productId: string, query?: string) =>
     `/product-management/products/${productId}${query ? `?${query}` : ''}`,
+
+  /**settings **/
+  notificationPage: () => '/setting/notification',
 };
 
 const pathsMap = {

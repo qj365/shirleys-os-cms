@@ -1,4 +1,5 @@
 import logo from '@/assets/logos/logo_full.webp';
+import AppNotificationMenu from '@/components/AppNotificationMenu';
 import AppUserMenu from '@/components/AppUserMenu/AppUserMenu';
 import ScrollRestoration from '@/components/ScrollRestoration';
 import SplashScreen from '@/components/SplashScreen';
@@ -90,7 +91,10 @@ export default function MainLayout() {
               className="mr-auto [&_.anticon]:!text-xl"
             />
           )}
-          <AppUserMenu invertColor />
+          <div className="flex items-center">
+            <AppNotificationMenu invertColor />
+            <AppUserMenu invertColor />
+          </div>
         </header>
 
         <section className={style.pageContentWrapper} id="main-layout">
