@@ -1,5 +1,4 @@
 import AppHelmet from '@/components/AppHelmet/AppHelmet';
-import AppPageHeader from '@/components/AppPageHeader/AppPageHeader';
 import OrderDetail from '@/features/product-management/components/OrderDetail';
 
 export default function OrderDetailPage() {

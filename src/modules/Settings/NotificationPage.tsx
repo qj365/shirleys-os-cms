@@ -1,5 +1,4 @@
 import AppHelmet from '@/components/AppHelmet/AppHelmet';
-import AppPageHeader from '@/components/AppPageHeader/AppPageHeader';
 import AppPaperBox from '@/components/AppPaperBox/AppPaperBox';
 import type { TPageInfo } from '@/utils/types';
 import { api } from '@/lib/api/admin';

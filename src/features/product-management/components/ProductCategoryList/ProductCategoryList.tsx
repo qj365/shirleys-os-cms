@@ -1,4 +1,3 @@
-import AppPageHeader from '@/components/AppPageHeader/AppPageHeader';
 import AppTable from '@/components/AppTable';
 import AppTableActionMenu from '@/components/AppTableActionMenu';
 import OverlayPanelWrapper from '@/components/Overlays/OverlayPanelWrapper';

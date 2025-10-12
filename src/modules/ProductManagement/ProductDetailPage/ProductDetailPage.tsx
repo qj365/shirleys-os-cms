@@ -1,5 +1,4 @@
 import AppHelmet from '@/components/AppHelmet/AppHelmet';
-import AppPageHeader from '@/components/AppPageHeader/AppPageHeader';
 import ProductDetail from '@/features/product-management/components/ProductDetail';
 import { useParams } from 'react-router-dom';
 
