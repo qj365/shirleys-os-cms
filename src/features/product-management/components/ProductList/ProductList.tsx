@@ -16,7 +16,6 @@ import {
 import useDebounceSearch from '@/utils/hooks/useDebounceSearch';
 import useHandleDeleteRecord from '@/utils/hooks/useHandleDeleteRecord';
 import useHandlePagination from '@/utils/hooks/useHandlePagination';
-import type { TPageInfo } from '@/utils/types';
 import {
   Avatar,
   Button,
@@ -31,7 +30,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function ProductList({ pageTitle }: TPageInfo) {
+export default function ProductList() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);

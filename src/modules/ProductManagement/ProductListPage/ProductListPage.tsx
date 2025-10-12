@@ -6,7 +6,7 @@ export default function ProductListPage({ pageTitle }: TPageInfo) {
   return (
     <>
       <AppHelmet title={pageTitle} />
-      <ProductList pageTitle={pageTitle} />
+      <ProductList />
     </>
   );
 }
