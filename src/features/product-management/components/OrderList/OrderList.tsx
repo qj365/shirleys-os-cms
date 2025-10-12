@@ -209,7 +209,10 @@ export default function OrderList({ pageTitle }: TPageInfo) {
             type="text"
             size="small"
             className="text-primary hover:cursor-pointer"
-            onClick={() => handleOpenFulfillModal(record.id)}
+            onClick={e => {
+              e.stopPropagation();
+              handleOpenFulfillModal(record.id);
+            }}
           >
             Fulfill Order
           </Button>
