@@ -230,7 +230,7 @@ export default function ProductList({ pageTitle }: TPageInfo) {
     {
       key: 'actions',
       title: 'Actions',
-      width: 100,
+      width: 150,
       fixed: 'right',
       align: 'center',
       render: (record: GetProductsResponse) => {
