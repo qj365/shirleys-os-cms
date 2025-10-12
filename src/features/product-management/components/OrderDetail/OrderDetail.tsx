@@ -10,6 +10,8 @@ import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+const { TextArea } = Input;
+
 export default function OrderDetail() {
   const { orderId } = useParams<{ orderId: string }>();
   const [orderData, setOrderData] = useState<AdminGetOrderByIdResponse | null>(
@@ -17,7 +19,9 @@ export default function OrderDetail() {
   );
   const [isLoading, setIsLoading] = useState(true);
   const [isFulfillModalOpen, setIsFulfillModalOpen] = useState(false);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
   const [form] = Form.useForm();
+  const [cancelForm] = Form.useForm();
 
   const handleGetOrderDetail = useCallback(async () => {
     if (!orderId) return;
@@ -65,6 +69,34 @@ export default function OrderDetail() {
     }
   };
 
+  const handleOpenCancelModal = () => {
+    setIsCancelModalOpen(true);
+  };
+
+  const handleCloseCancelModal = () => {
+    setIsCancelModalOpen(false);
+    cancelForm.resetFields();
+  };
+
+  const handleCancelOrder = async () => {
+    try {
+      const values = await cancelForm.validateFields();
+      if (!orderId) return;
+
+      await api.order.adminOrderCancel({
+        id: Number(orderId),
+        requestBody: {
+          orderCancelNote: values.reason,
+        },
+      });
+      void message.success('Order cancelled successfully');
+      handleCloseCancelModal();
+      handleGetOrderDetail();
+    } catch (e) {
+      toastErrorMessage(e);
+    }
+  };
+
   useEffect(() => {
     handleGetOrderDetail();
   }, [handleGetOrderDetail]);
@@ -94,6 +126,7 @@ export default function OrderDetail() {
     courierName,
     total,
     orderInfo,
+    orderCancelNote,
   } = orderData;
 
   const getFulfillmentStatusColor = (status: string | null) => {
@@ -178,9 +211,14 @@ export default function OrderDetail() {
           <div className="mb-2 flex items-center justify-between">
             <h2 className="text-2xl font-semibold">Invoice</h2>
             {fulfillmentStatus === _36_Enums_FulfillmentStatus.UNFULFILLED && (
-              <Button type="primary" onClick={handleOpenFulfillModal}>
-                Fulfill order
-              </Button>
+              <div className="flex gap-2">
+                <Button danger onClick={handleOpenCancelModal}>
+                  Cancel order
+                </Button>
+                <Button type="primary" onClick={handleOpenFulfillModal}>
+                  Fulfill order
+                </Button>
+              </div>
             )}
           </div>
 
@@ -293,7 +331,7 @@ export default function OrderDetail() {
             <div className="flex-1 rounded-lg bg-gray-50 p-4">
               <p className="mb-1 text-sm font-semibold">Note</p>
               <p className="text-sm text-gray-500">
-                {orderInfo?.note || '---'}
+                {orderCancelNote || '---'}
               </p>
             </div>
 
@@ -336,6 +374,35 @@ export default function OrderDetail() {
             <Select placeholder="Select carrier">
               <Select.Option value="fedex">FedEx</Select.Option>
             </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* Cancel Order Modal */}
+      <Modal
+        title="Cancel Order"
+        open={isCancelModalOpen}
+        onCancel={handleCloseCancelModal}
+        onOk={handleCancelOrder}
+        okText="Cancel Order"
+        cancelText="Close"
+        okButtonProps={{ danger: true }}
+      >
+        <Form form={cancelForm} layout="vertical" className="mt-4">
+          <Form.Item
+            name="reason"
+            label="Cancellation Reason"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter a reason for cancellation',
+              },
+            ]}
+          >
+            <TextArea
+              rows={4}
+              placeholder="Enter the reason for cancelling this order"
+            />
           </Form.Item>
         </Form>
       </Modal>
