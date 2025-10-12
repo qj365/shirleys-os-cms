@@ -57,4 +57,12 @@ export const privateRoutes: TRoute[] = [
       lazyImport(() => import('@/modules/ProductManagement/ProductDetailPage'))
     ),
   },
+
+  {
+    path: getPath('notificationPage'),
+    element: createElement(
+      lazyImport(() => import('@/modules/Settings/NotificationPage')),
+      { pageTitle: 'Notification Settings' }
+    ),
+  },
 ];

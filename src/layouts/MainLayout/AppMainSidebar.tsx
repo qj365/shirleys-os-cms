@@ -1,7 +1,13 @@
 import { useAppInfoStore } from '@/lib/stores/appInfoStore';
 import { getPath } from '@/routers/router-paths';
 import { Menu } from 'antd';
-import { ChartColumnIncreasing, Cylinder, LayoutList } from 'lucide-react';
+import {
+  Bell,
+  ChartColumnIncreasing,
+  Cylinder,
+  LayoutList,
+  Settings,
+} from 'lucide-react';
 import type { MenuInfo } from 'rc-menu/es/interface';
 import { useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -63,6 +69,18 @@ const AppMainSidebar = () => {
               key: getPath('productListPage'),
               label: 'Product',
               icon: <Cylinder className="shrink-0" width={20} height={20} />,
+            },
+          ],
+        },
+        {
+          key: 'settings',
+          label: 'Setting',
+          icon: <Settings className="shrink-0" width={20} height={20} />,
+          children: [
+            {
+              key: getPath('notificationPage'),
+              label: 'Notification',
+              icon: <Bell className="shrink-0" width={20} height={20} />,
             },
           ],
         },
