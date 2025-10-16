@@ -19,6 +19,7 @@ interface VariantRow {
   stock: number;
   image: string;
   selected: boolean;
+  minOrder: number;
   displayKey?: string;
 }
 
@@ -26,6 +27,7 @@ const bulkFiledOptions = [
   { label: 'Price', value: 'price' },
   { label: 'Compare at Price', value: 'compareAtPrice' },
   { label: 'Stock', value: 'stock' },
+  { label: 'Min Order', value: 'minOrder' },
   { label: 'Image', value: 'image' },
 ];
 
@@ -80,6 +82,13 @@ export const ProductDetailVariants = () => {
     if (stock == null) return 'Required';
     if (stock < 0) return 'Must ≥ 0';
     if (stock > 99999) return 'Must < 99999';
+    return '';
+  };
+
+  const validateMinOrder = (minOrder: number) => {
+    if (minOrder == null) return 'Required';
+    if (minOrder < 1) return 'Must ≥ 1';
+    if (minOrder > 99999) return 'Must < 99999';
     return '';
   };
 
@@ -334,6 +343,28 @@ export const ProductDetailVariants = () => {
         );
       },
     },
+    {
+      title: 'Min Order',
+      dataIndex: 'minOrder',
+      render: (_, record: any) => {
+        if (record.isGroup) return null;
+
+        const errorMsg = validateMinOrder(record.minOrder);
+
+        return (
+          <InputNumber
+            min={1}
+            max={99999}
+            value={record.minOrder}
+            onChange={val =>
+              updateVariant(record.id, { minOrder: Number(val) })
+            }
+            status={errorMsg ? 'error' : undefined}
+            placeholder="Enter min order"
+          />
+        );
+      },
+    },
   ];
 
   const bulkFormField = useMemo(() => {
@@ -373,6 +404,20 @@ export const ProductDetailVariants = () => {
             }}
             className="w-50"
             placeholder="Enter stock amount"
+          />
+        );
+
+      case 'minOrder':
+        return (
+          <InputNumber
+            min={1}
+            max={99999}
+            onBlur={onBlurInput}
+            onKeyDown={e => {
+              if (e.key === 'Enter') onBlurInput(e as any);
+            }}
+            className="w-50"
+            placeholder="Enter min order"
           />
         );
 

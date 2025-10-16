@@ -10,7 +10,7 @@ export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
 
   const navigate = useNavigate();
 
-  const { setAppUser } = useAuthStore();
+  const { setAppUser, logout } = useAuthStore();
 
   useEffect(() => {
     initializeAuth(navigate);
@@ -26,8 +26,16 @@ export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
           return;
         }
         setAppUser(response);
-      } catch (e) {
-        console.log(e);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (e: any) {
+        console.log('Error getting app user', e);
+
+        //redirect to login if status 401, 403,  call logout and redirect to login
+        if (e.status === 401 || e.status === 403) {
+          await logout();
+          navigate(getPath('login'), { replace: true });
+          return;
+        }
       }
     };
     getAppUser();

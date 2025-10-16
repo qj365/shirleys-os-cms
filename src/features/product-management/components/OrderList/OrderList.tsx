@@ -6,7 +6,10 @@ import {
   type AdminGetOrdersResponse,
   type NumberedPagingResponse_AdminGetOrdersResponse_Array_,
 } from '@/lib/api/admin';
-import { toastErrorMessage } from '@/utils/dataTypes/string';
+import {
+  formatDisplayCurrency,
+  toastErrorMessage,
+} from '@/utils/dataTypes/string';
 import useDebounceSearch from '@/utils/hooks/useDebounceSearch';
 import useHandlePagination from '@/utils/hooks/useHandlePagination';
 import type { TPageInfo } from '@/utils/types';
@@ -160,7 +163,7 @@ export default function OrderList({ pageTitle }: TPageInfo) {
       title: 'Total',
       width: 150,
       dataIndex: 'total',
-      render: total => `$${total.toFixed(2)}`,
+      render: total => <span>{formatDisplayCurrency(total.toFixed(2))}</span>,
     },
     {
       title: 'Status',

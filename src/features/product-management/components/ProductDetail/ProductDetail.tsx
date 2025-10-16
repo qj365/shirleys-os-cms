@@ -72,6 +72,18 @@ const validateVariants = (variants: Variant[]) => {
       return false;
     }
 
+    // Validate minOrder
+    if (
+      typeof variant.minOrder !== 'number' ||
+      variant.minOrder < 1 ||
+      variant.minOrder > 99999
+    ) {
+      message.error(
+        `Variant "${variant.name}": Min Order must be a number between 1 and 99999`
+      );
+      return false;
+    }
+
     return true;
   });
 };
@@ -104,7 +116,7 @@ const ProductDetail = () => {
 
     return {
       sku: isCreateNewProduct ? skuGenerator(12) : sku,
-      active: isCreateNewProduct ? true : status,
+      status: isCreateNewProduct ? _36_Enums_ProductStatus.ACTIVE : status,
 
       ...((!isCreateNewProduct || (isCreateNewProduct && duplicateId)) && {
         name: !isCreateNewProduct ? name : `${name} (CLONE 1)`,
@@ -175,7 +187,6 @@ const ProductDetail = () => {
               sku,
               variantOptions,
               productVariants: variants.map(v => {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const { id, selected, sku, ...variantPayload } = v || {};
 
                 return { ...variantPayload };
@@ -189,6 +200,7 @@ const ProductDetail = () => {
                   compareAtPrice: item?.compareAtPrice,
                   image: item?.image,
                   stock: item?.stock,
+                  minOrder: item?.minOrder,
                 };
               }),
             }),
@@ -320,7 +332,6 @@ const ProductDetail = () => {
 
             <Form.Item
               name="status"
-              initialValue={true}
               label="Product status"
               rules={[
                 { required: true, message: 'Please select Product status' },

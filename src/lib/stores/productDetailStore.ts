@@ -25,6 +25,7 @@ export interface Variant {
   image: string;
   selected: boolean;
   sku?: number;
+  minOrder: number;
 }
 
 export interface ProductStoreState {
@@ -203,6 +204,7 @@ export const useProductDetailStore = create<ProductDetailStore>((set, get) => ({
         stock: 0,
         image: '',
         selected: false,
+        minOrder: 1,
       }));
 
       set({

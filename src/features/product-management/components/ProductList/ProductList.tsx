@@ -97,6 +97,9 @@ export default function ProductList() {
       {
         key: '1',
         label: <span>Edit Product</span>,
+        onClick: () => {
+          navigate(getPath('productDetailPage', item.id.toString()));
+        },
       },
 
       {

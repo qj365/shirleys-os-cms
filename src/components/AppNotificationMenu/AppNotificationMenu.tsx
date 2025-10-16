@@ -118,15 +118,9 @@ const AppNotificationMenu = ({ invertColor }: AppNotificationMenuProps) => {
         minWidth: 300,
       }}
     >
-      <div
-        className={clsx(
-          style.userAvatarWrapper,
-          invertColor && style.invertColor
-        )}
-        style={{ marginRight: 12 }}
-      >
+      <div style={{ marginRight: 12 }}>
         <Badge count={unreadCount} size="small" offset={[-4, 4]}>
-          <BellOutlined className="text-base" />
+          <BellOutlined className="!text-xl" />
         </Badge>
       </div>
     </Dropdown>

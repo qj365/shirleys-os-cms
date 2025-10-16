@@ -4,7 +4,10 @@ import {
   api,
   type AdminGetOrderByIdResponse,
 } from '@/lib/api/admin';
-import { toastErrorMessage } from '@/utils/dataTypes/string';
+import {
+  formatDisplayCurrency,
+  toastErrorMessage,
+} from '@/utils/dataTypes/string';
 import { Button, Form, Image, Input, message, Modal, Select, Tag } from 'antd';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
@@ -177,7 +180,7 @@ export default function OrderDetail() {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Zip code</span>
+                <span className="text-gray-500">Post code</span>
                 <span className="font-semibold">
                   {orderInfo?.shippingZipCode || 'N/A'}
                 </span>
@@ -307,7 +310,9 @@ export default function OrderDetail() {
                       </div>
                       <div className="col-span-2 flex items-center justify-end">
                         <p className="text-sm">
-                          ${item.price?.toFixed(2) || '0.00'}
+                          {formatDisplayCurrency(
+                            item.price?.toFixed(2) as unknown as number
+                          )}
                         </p>
                       </div>
                       <div className="col-span-2 flex items-center justify-end">
@@ -315,7 +320,9 @@ export default function OrderDetail() {
                       </div>
                       <div className="col-span-2 flex items-center justify-end">
                         <p className="text-sm">
-                          ${item.total?.toFixed(2) || '0.00'}
+                          {formatDisplayCurrency(
+                            item.total?.toFixed(2) as unknown as number
+                          )}
                         </p>
                       </div>
                     </div>
@@ -339,7 +346,11 @@ export default function OrderDetail() {
             <div className="flex-1 space-y-3">
               <div className="flex justify-between text-lg font-semibold">
                 <span>Total</span>
-                <span>${total?.toFixed(2) || '0.00'}</span>
+                <span>
+                  {formatDisplayCurrency(
+                    total?.toFixed(2) as unknown as number
+                  )}
+                </span>
               </div>
             </div>
           </div>

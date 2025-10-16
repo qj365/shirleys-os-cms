@@ -47,11 +47,11 @@ export const convertHexToRgbaPair = (
 
 export const formatDisplayCurrency = (
   price: number,
-  currency = 'USD'
+  currency = 'GBP'
 ): string => {
   const config: Intl.NumberFormatOptions = {
     style: 'currency',
-    currency: currency || 'USD',
+    currency: currency || 'GBP',
   };
 
   let locale: string;
@@ -60,8 +60,11 @@ export const formatDisplayCurrency = (
     case 'USD':
       locale = 'en-US';
       break;
+    case 'GBP':
+      locale = 'en-GB';
+      break;
     default:
-      locale = 'en-US';
+      locale = 'en-GB';
   }
 
   return price !== undefined
