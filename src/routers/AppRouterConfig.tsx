@@ -21,12 +21,18 @@ const AppRouterConfig = createBrowserRouter(
         />
       ))}
 
-      <Route element={<MainLayout />}>
+      <Route
+        element={
+          <ProtectedRoute>
+            <MainLayout />
+          </ProtectedRoute>
+        }
+      >
         {privateRoutes.map(route => (
           <Route
             key={route.path}
             path={route.path}
-            element={<ProtectedRoute>{route.element}</ProtectedRoute>}
+            element={route.element}
             errorElement={<ErrorBoundary />}
           />
         ))}
