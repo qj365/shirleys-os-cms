@@ -28,18 +28,21 @@ import {
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getPath } from '@/routers/router-paths';
 
 const { RangePicker } = DatePicker;
 
 export default function OrderList({ pageTitle }: TPageInfo) {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
   const [dateRange, setDateRange] = useState<
     [dayjs.Dayjs | null, dayjs.Dayjs | null] | null
   >(null);
-  const [tabActiveKey, setTabActiveKey] = useState<string>('ALL');
+  const [tabActiveKey, setTabActiveKey] = useState<string>(
+    searchParams.get('fulfillmentStatus') || 'ALL'
+  );
   const [isFulfillModalOpen, setIsFulfillModalOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
   const [form] = Form.useForm();
@@ -257,7 +260,14 @@ export default function OrderList({ pageTitle }: TPageInfo) {
         <Tabs
           activeKey={tabActiveKey}
           items={items}
-          onChange={setTabActiveKey}
+          onChange={key => {
+            setTabActiveKey(key);
+            if (key === 'ALL') {
+              setSearchParams({});
+            } else {
+              setSearchParams({ fulfillmentStatus: key });
+            }
+          }}
           className="[&_.ant-tabs-tab]:!min-w-25 [&_.ant-tabs-tab]:!text-base"
         />
         <AppTable
