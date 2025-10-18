@@ -202,7 +202,20 @@ export default function OrderDetail() {
 
             <div className="border-t pt-4">
               <p className="mb-2 text-sm font-semibold">Billing address</p>
-              <p className="text-sm text-gray-500">Same as shipping address</p>
+              {orderInfo?.billingAddress1 === orderInfo?.shippingAddress1 &&
+              orderInfo?.billingAddress2 === orderInfo?.shippingAddress2 &&
+              orderInfo?.billingCity === orderInfo?.shippingCity &&
+              orderInfo?.billingProvince === orderInfo?.shippingProvince &&
+              orderInfo?.billingZipCode === orderInfo?.shippingZipCode &&
+              orderInfo?.billingCountry === orderInfo?.shippingCountry ? (
+                <p className="text-sm text-gray-500">
+                  Same as shipping address
+                </p>
+              ) : (
+                <p className="text-sm text-gray-500">
+                  {`${[orderInfo?.billingAddress1, orderInfo?.billingCity, orderInfo?.billingProvince, orderInfo?.billingCountry].filter(Boolean).join(', ')}`}
+                </p>
+              )}
             </div>
           </div>
         </AppPaperBox>

@@ -34,6 +34,7 @@ export default function NotificationPage({ pageTitle }: TPageInfo) {
       const values = {
         lowStockNotification: response.lowStockNotification,
         lowStockValue: response.lowStockValue,
+        newOrderNotification: response.newOrderNotification,
       };
 
       form.setFieldsValue(values);
@@ -82,7 +83,8 @@ export default function NotificationPage({ pageTitle }: TPageInfo) {
     const hasChanged =
       currentValues.lowStockNotification !==
         initialValues.lowStockNotification ||
-      currentValues.lowStockValue !== initialValues.lowStockValue;
+      currentValues.lowStockValue !== initialValues.lowStockValue ||
+      currentValues.newOrderNotification !== initialValues.newOrderNotification;
 
     setHasChanges(hasChanged);
   };
@@ -106,6 +108,7 @@ export default function NotificationPage({ pageTitle }: TPageInfo) {
               initialValues={{
                 lowStockNotification: false,
                 lowStockValue: 5,
+                newOrderNotification: false,
               }}
               onValuesChange={checkFormChanges}
             >
@@ -168,6 +171,28 @@ export default function NotificationPage({ pageTitle }: TPageInfo) {
                         );
                       }}
                     </Form.Item>
+                  </div>
+                </Form.Item>
+
+                <Form.Item>
+                  <div className="flex flex-col space-y-6 border-t pt-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-medium dark:text-gray-200">
+                          New Order Notifications
+                        </h3>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">
+                          Get notified when a new order is placed.
+                        </p>
+                      </div>
+                      <Form.Item
+                        name="newOrderNotification"
+                        valuePropName="checked"
+                        noStyle
+                      >
+                        <Switch />
+                      </Form.Item>
+                    </div>
                   </div>
                 </Form.Item>
 
