@@ -20,8 +20,6 @@ const privatePaths = {
   /**service **/
   cookingClassListPage: (query?: string) =>
     `/service/cooking-class${query ? `?${query}` : ''}`,
-  cookingClassDetailPage: (cookingClassId: string, query?: string) =>
-    `/service/cooking-class/${cookingClassId}${query ? `?${query}` : ''}`,
   /**settings **/
   notificationPage: () => '/setting/notification',
 };
