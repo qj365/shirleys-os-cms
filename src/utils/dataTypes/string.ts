@@ -74,7 +74,7 @@ export const formatDisplayCurrency = (
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const toastErrorMessage = (error: any) => {
-  console.log('Error: ', JSON.stringify(error || {}));
+  console.log('Error: ', error);
   void message.error(
     error?.body?.details ||
       error?.body?.message ||

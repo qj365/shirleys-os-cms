@@ -5,6 +5,7 @@ import AppTextEditor from './AppTextEditor';
 type AppTextEditorFormFieldProps = {
   placeholder?: string;
   parentFieldName?: string;
+  isShowMediaFeatures?: boolean;
 } & FormItemProps;
 
 const { useFormInstance, useWatch } = Form;
@@ -15,6 +16,7 @@ const AppTextEditorFormField = ({
   rules = [],
   placeholder = '',
   parentFieldName,
+  isShowMediaFeatures = true,
   ...formItemProps
 }: AppTextEditorFormFieldProps) => {
   const form = useFormInstance();
@@ -37,6 +39,7 @@ const AppTextEditorFormField = ({
         value={formValue ?? ''}
         onBlur={handleBlur}
         placeholder={placeholder}
+        isShowMediaFeatures={isShowMediaFeatures}
       />
     </Form.Item>
   );

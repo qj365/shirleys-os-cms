@@ -4,6 +4,7 @@ import { Menu } from 'antd';
 import {
   Bell,
   ChartColumnIncreasing,
+  ChefHat,
   Cylinder,
   LayoutList,
   ShoppingCart,
@@ -98,6 +99,18 @@ const AppMainSidebar = () => {
               icon: (
                 <ShoppingCart className="shrink-0" width={20} height={20} />
               ),
+            },
+          ],
+        },
+        {
+          key: 'Service',
+          label: 'Service',
+          type: 'group',
+          children: [
+            {
+              key: getPath('cookingClassListPage'),
+              label: 'Cooking Class',
+              icon: <ChefHat className="shrink-0" width={20} height={20} />,
             },
           ],
         },
