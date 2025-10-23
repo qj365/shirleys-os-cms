@@ -98,7 +98,7 @@ export default function MainLayout() {
         </header>
 
         <section className={style.pageContentWrapper} id="main-layout">
-          <div className="mx-auto flex w-full flex-1 flex-col px-8 py-6">
+          <div className="mx-auto flex w-full flex-1 flex-col p-6">
             <Suspense
               fallback={
                 <ScrollRestoration>

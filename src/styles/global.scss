@@ -41,3 +41,123 @@
 html {
   scroll-behavior: smooth;
 }
+
+.fc-dayGridMonth-view td.fc-daygrid-day {
+  min-height: 100px;
+}
+
+/* FullCalendar Font Size Customization */
+.fc {
+  font-size: 14px;
+}
+
+/* Calendar header font sizes */
+.fc-toolbar-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.fc-button {
+  font-size: 12px;
+}
+
+.fc-col-header-cell-cushion {
+  font-size: 12px;
+}
+
+/* Day numbers */
+.fc-daygrid-day-number {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Event titles */
+.fc-event-title {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Time display in events */
+.fc-event-time {
+  font-size: 0.6875rem;
+}
+
+/* Week day headers */
+.fc-col-header-cell {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Month view events */
+.fc-daygrid-event {
+  font-size: 0.75rem;
+}
+
+/* Week view events */
+.fc-timegrid-event {
+  font-size: 0.75rem;
+}
+
+/* Day view events */
+.fc-list-event-title {
+  font-size: 0.875rem;
+}
+
+.fc-list-event-time {
+  font-size: 0.75rem;
+}
+
+/* Custom event content styling */
+.fc-event-main {
+  font-size: 0.75rem;
+}
+
+/* Responsive font sizes */
+@media (max-width: 768px) {
+  .fc {
+    font-size: 12px;
+  }
+
+  .fc-toolbar-title {
+    font-size: 1.25rem;
+  }
+
+  .fc-event-title {
+    font-size: 0.6875rem;
+  }
+
+  .fc-event-time {
+    font-size: 0.625rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .fc {
+    font-size: 15px;
+  }
+
+  .fc-toolbar-title {
+    font-size: 1.75rem;
+  }
+
+  .fc-event-title {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Custom font size classes for FullCalendar */
+.fc-small {
+  font-size: 12px;
+}
+
+.fc-medium {
+  font-size: 14px;
+}
+
+.fc-large {
+  font-size: 16px;
+}
+
+.fc-extra-large {
+  font-size: 18px;
+}
