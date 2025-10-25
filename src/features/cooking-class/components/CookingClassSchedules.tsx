@@ -238,14 +238,24 @@ const CookingClassSchedules = forwardRef<CookingClassSchedulesRef>((_, ref) => {
       const finalDateTimeISO = dayjs(finalDateTime).toISOString();
 
       try {
-        // Update the schedule time using the API
-        await api.cookingClass.updateCookingClassSchedule({
-          id: scheduleId,
-          requestBody: {
-            dateTime: finalDateTimeISO,
-            maxSlots: schedule.maxSlots, // Keep the same maxSlots
-          },
-        });
+        // Prepare request body with only changed fields
+        const requestBody: { dateTime?: string } = {};
+
+        // Check if dateTime has changed
+        const originalDateTime = dayjs(schedule.dateTime);
+        const newDateTime = dayjs(finalDateTimeISO);
+
+        if (!originalDateTime.isSame(newDateTime)) {
+          requestBody.dateTime = finalDateTimeISO;
+        }
+
+        // Only make API call if there are changes
+        if (Object.keys(requestBody).length > 0) {
+          await api.cookingClass.updateCookingClassSchedule({
+            id: scheduleId,
+            requestBody,
+          });
+        }
 
         const successMessage =
           currentView === 'timeGridDay'

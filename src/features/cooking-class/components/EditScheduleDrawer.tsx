@@ -76,17 +76,30 @@ const EditScheduleDrawer = ({
     try {
       setIsLoading(true);
       const { dateTime, maxSlots } = values;
-      const dateTimeString = dayjs.isDayjs(dateTime)
-        ? dateTime.toISOString()
-        : dateTime;
 
-      await api.cookingClass.updateCookingClassSchedule({
-        id: selectedSchedule.schedule.id,
-        requestBody: {
-          dateTime: dateTimeString,
-          maxSlots,
-        },
-      });
+      // Prepare request body with only changed fields
+      const requestBody: { dateTime?: string; maxSlots?: number } = {};
+
+      // Check if dateTime has changed
+      const originalDateTime = dayjs(selectedSchedule.schedule.dateTime);
+      const newDateTime = dayjs.isDayjs(dateTime) ? dateTime : dayjs(dateTime);
+
+      if (!originalDateTime.isSame(newDateTime)) {
+        requestBody.dateTime = newDateTime.toISOString();
+      }
+
+      // Check if maxSlots has changed
+      if (maxSlots !== selectedSchedule.schedule.maxSlots) {
+        requestBody.maxSlots = maxSlots;
+      }
+
+      // Only make API call if there are changes
+      if (Object.keys(requestBody).length > 0) {
+        await api.cookingClass.updateCookingClassSchedule({
+          id: selectedSchedule.schedule.id,
+          requestBody,
+        });
+      }
 
       onUpdateSuccess?.();
       form.resetFields();
