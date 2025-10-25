@@ -174,7 +174,12 @@ export default function AddEditCookingClass({
       title={!cookingClassId ? 'Create Cooking Class' : 'Update Cooking Class'}
       loading={isFetching}
     >
-      <Form form={form} layout="vertical" onFinish={onFinish}>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+        disabled={isLoading}
+      >
         <div className="grid grid-cols-12 gap-x-4">
           <Form.Item
             name="name"
@@ -188,26 +193,23 @@ export default function AddEditCookingClass({
             ]}
             className="col-span-12"
           >
-            <Input placeholder="Enter cooking class name" />
+            <Input
+              placeholder="Enter cooking class name"
+              maxLength={200}
+              showCount
+            />
           </Form.Item>
 
           <Form.Item
             name="price"
             label="Price"
-            rules={[
-              { required: true, message: 'Please input price' },
-              {
-                type: 'number',
-                min: 0,
-                message: 'Price must be greater than 0',
-              },
-            ]}
+            rules={[{ required: true, message: 'Please input price' }]}
             className="col-span-6"
           >
             <InputNumber
               prefix="£"
               placeholder="Enter price"
-              min={0}
+              min={0.01}
               step={0.01}
               precision={2}
               className="w-full"

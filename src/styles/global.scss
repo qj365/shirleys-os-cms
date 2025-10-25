@@ -161,3 +161,7 @@ html {
 .fc-extra-large {
   font-size: 18px;
 }
+
+.fc-popover.fc-more-popover {
+  z-index: 999 !important;
+}

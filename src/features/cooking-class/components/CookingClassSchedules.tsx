@@ -1,8 +1,5 @@
 import { api, type AdminGetCookingClassesResponse } from '@/lib/api/admin';
-import {
-  formatDisplayCurrency,
-  toastErrorMessage,
-} from '@/utils/dataTypes/string';
+import { toastErrorMessage } from '@/utils/dataTypes/string';
 import {
   type DateSelectArg,
   type EventClickArg,
@@ -13,16 +10,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import {
-  Button,
-  DatePicker,
-  Form,
-  InputNumber,
-  Modal,
-  Select,
-  Spin,
-  message,
-} from 'antd';
+import { Form, Spin, message } from 'antd';
 import dayjs from 'dayjs';
 import {
   forwardRef,
@@ -32,6 +20,8 @@ import {
   useMemo,
   useState,
 } from 'react';
+import AddNewScheduleModal from './AddNewScheduleModal';
+import EditScheduleDrawer from './EditScheduleDrawer';
 
 export interface CookingClassSchedulesRef {
   refreshData: () => void;
@@ -65,9 +55,6 @@ const CookingClassSchedules = forwardRef<CookingClassSchedulesRef>((_, ref) => {
     end: dayjs().endOf('month').toISOString(),
   });
   const [currentView, setCurrentView] = useState<string>('dayGridMonth');
-
-  const [form] = Form.useForm();
-  const [editForm] = Form.useForm();
 
   // Expose refresh function to parent component
   useImperativeHandle(ref, () => ({
@@ -105,6 +92,49 @@ const CookingClassSchedules = forwardRef<CookingClassSchedulesRef>((_, ref) => {
       toastErrorMessage(error);
     }
   }, []);
+
+  // Fetch updated cooking class data and update selectedSchedule
+  const updateSelectedScheduleWithFreshData = useCallback(async () => {
+    if (!selectedSchedule?.cookingClassId) return;
+
+    try {
+      const updatedCookingClass = await api.cookingClass.getCookingClass({
+        id: selectedSchedule.cookingClassId,
+      });
+
+      // Update the selectedSchedule with fresh data
+      setSelectedSchedule(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          cookingClass: {
+            ...prev.cookingClass,
+            name: updatedCookingClass.name,
+            price: updatedCookingClass.price,
+            image: updatedCookingClass.image,
+            description: updatedCookingClass.description,
+            address: updatedCookingClass.address,
+            duration: updatedCookingClass.duration,
+            whatToExpect: updatedCookingClass.whatToExpect,
+          },
+        };
+      });
+    } catch (error) {
+      toastErrorMessage(error);
+    }
+  }, [selectedSchedule?.cookingClassId]);
+
+  const onUpdateClassInfoSuccess = useCallback(async () => {
+    // Refresh cooking classes data
+    fetchCookingClasses();
+    fetchAllCookingClasses();
+    // Update selectedSchedule with fresh data
+    await updateSelectedScheduleWithFreshData();
+  }, [
+    fetchCookingClasses,
+    fetchAllCookingClasses,
+    updateSelectedScheduleWithFreshData,
+  ]);
 
   useEffect(() => {
     fetchCookingClasses();
@@ -153,7 +183,7 @@ const CookingClassSchedules = forwardRef<CookingClassSchedulesRef>((_, ref) => {
     const { cookingClass, schedule, scheduleIndex, scheduleId } =
       event.extendedProps;
 
-    // If it's an existing schedule, open edit modal
+    // If it's an existing schedule, open edit drawer
     if (scheduleIndex !== undefined && scheduleId) {
       setSelectedSchedule({
         cookingClassId: cookingClass.id,
@@ -268,97 +298,12 @@ const CookingClassSchedules = forwardRef<CookingClassSchedulesRef>((_, ref) => {
     []
   );
 
-  const handleAddSchedule = useCallback(
-    async (values: {
-      cookingClassId: string;
-      maxSlots: number;
-      dateTime: dayjs.Dayjs | string;
-    }) => {
-      try {
-        const { cookingClassId, maxSlots, dateTime } = values;
-        // Convert dayjs object to ISO string if needed
-        const dateTimeString = dayjs.isDayjs(dateTime)
-          ? dateTime.toISOString()
-          : dateTime;
-
-        await api.cookingClass.createCookingClassSchedule({
-          requestBody: {
-            cookingClassId: parseInt(cookingClassId),
-            maxSlots,
-            dateTime: dateTimeString,
-          },
-        });
-        message.success('Schedule created successfully');
-        setIsAddScheduleOpen(false);
-        form.resetFields();
-        fetchCookingClasses();
-      } catch (error) {
-        toastErrorMessage(error);
-      }
-    },
-    [form, fetchCookingClasses]
-  );
-
-  const handleEditSchedule = useCallback(
-    async (values: { dateTime: dayjs.Dayjs | string; maxSlots: number }) => {
-      if (!selectedSchedule) return;
-
-      try {
-        const { dateTime, maxSlots } = values;
-        const dateTimeString = dayjs.isDayjs(dateTime)
-          ? dateTime.toISOString()
-          : dateTime;
-
-        // Use the updateCookingClassSchedule API with the schedule ID
-        await api.cookingClass.updateCookingClassSchedule({
-          id: selectedSchedule.schedule.id,
-          requestBody: {
-            dateTime: dateTimeString,
-            maxSlots,
-          },
-        });
-
-        message.success('Schedule updated successfully');
-        setIsEditScheduleOpen(false);
-        editForm.resetFields();
-        setSelectedSchedule(null);
-        fetchCookingClasses();
-      } catch (error) {
-        toastErrorMessage(error);
-      }
-    },
-    [selectedSchedule, editForm, fetchCookingClasses]
-  );
-
-  const handleDeleteSchedule = useCallback(async () => {
-    if (!selectedSchedule) return;
-
-    Modal.confirm({
-      title: 'Delete Schedule',
-      content:
-        'Are you sure you want to delete this schedule? This action cannot be undone.',
-      okText: 'Delete',
-      okType: 'danger',
-      cancelText: 'Cancel',
-      onOk: async () => {
-        try {
-          await api.cookingClass.deleteCookingClassSchedules({
-            requestBody: {
-              id: selectedSchedule.schedule.id,
-            },
-          });
-
-          message.success('Schedule deleted successfully');
-          setIsEditScheduleOpen(false);
-          editForm.resetFields();
-          setSelectedSchedule(null);
-          fetchCookingClasses();
-        } catch (error) {
-          toastErrorMessage(error);
-        }
-      },
-    });
-  }, [selectedSchedule, editForm, fetchCookingClasses]);
+  const handleEditScheduleSuccess = useCallback(() => {
+    message.success('Schedule updated successfully');
+    setIsEditScheduleOpen(false);
+    setSelectedSchedule(null);
+    fetchCookingClasses();
+  }, [fetchCookingClasses]);
 
   return (
     <div className="space-y-4">
@@ -401,196 +346,21 @@ const CookingClassSchedules = forwardRef<CookingClassSchedulesRef>((_, ref) => {
         />
       </Spin>
 
-      {/* Add Schedule Modal */}
-      <Modal
-        title="Add New Schedule"
-        open={isAddScheduleOpen}
-        onCancel={() => {
-          setIsAddScheduleOpen(false);
-          form.resetFields();
-        }}
-        footer={null}
-        width={600}
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleAddSchedule}
-          initialValues={{
-            dateTime: selectedDate ? dayjs(selectedDate) : undefined,
-            maxSlots: 10,
-          }}
-        >
-          <Form.Item
-            name="cookingClassId"
-            label="Cooking Class"
-            rules={[
-              { required: true, message: 'Please select a cooking class' },
-            ]}
-          >
-            <Select
-              showSearch
-              placeholder="Search and select a cooking class"
-              optionFilterProp="children"
-              filterOption={(input, option) =>
-                (option?.label ?? '')
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              options={allCookingClasses.map(cookingClass => ({
-                value: cookingClass.id.toString(),
-                label: cookingClass.name,
-              }))}
-            />
-          </Form.Item>
-
-          <Form.Item
-            name="dateTime"
-            label="Date & Time"
-            rules={[{ required: true, message: 'Please select date and time' }]}
-          >
-            <DatePicker
-              showTime={{ format: 'HH:mm', minuteStep: 15 }}
-              format="YYYY-MM-DD HH:mm"
-              className="w-full"
-              placeholder="Select date and time"
-            />
-          </Form.Item>
-
-          <Form.Item
-            name="maxSlots"
-            label="Max Slots"
-            rules={[
-              { required: true, message: 'Please input max slots' },
-              {
-                type: 'number',
-                min: 1,
-                max: 50,
-                message: 'Max slots must be between 1 and 50',
-              },
-            ]}
-          >
-            <InputNumber
-              min={1}
-              max={50}
-              className="w-full"
-              placeholder="Enter max slots"
-            />
-          </Form.Item>
-
-          <Form.Item className="mb-0">
-            <div className="flex justify-end space-x-2">
-              <Button
-                onClick={() => {
-                  setIsAddScheduleOpen(false);
-                  form.resetFields();
-                }}
-              >
-                Cancel
-              </Button>
-              <Button type="primary" htmlType="submit">
-                Add Schedule
-              </Button>
-            </div>
-          </Form.Item>
-        </Form>
-      </Modal>
-
-      {/* Edit Schedule Modal */}
-      <Modal
-        title="Edit Schedule"
+      <EditScheduleDrawer
         open={isEditScheduleOpen}
-        onCancel={() => {
-          setIsEditScheduleOpen(false);
-          editForm.resetFields();
-          setSelectedSchedule(null);
-        }}
-        footer={null}
-        width={600}
-      >
-        <Form
-          form={editForm}
-          layout="vertical"
-          onFinish={handleEditSchedule}
-          initialValues={{
-            dateTime: selectedSchedule?.schedule?.dateTime
-              ? dayjs(selectedSchedule.schedule.dateTime)
-              : undefined,
-            maxSlots: selectedSchedule?.schedule?.maxSlots || 10,
-          }}
-        >
-          {/* Display class information */}
-          {selectedSchedule?.cookingClass && (
-            <div className="mb-4 rounded-lg bg-gray-50 p-3">
-              <div className="text-sm font-semibold text-gray-900">
-                Class Name:{selectedSchedule.cookingClass.name} (
-                {formatDisplayCurrency(selectedSchedule.cookingClass.price)})
-              </div>
-              <div className="text-base text-gray-700">
-                available / max slots:{' '}
-                {selectedSchedule.schedule.availableSlots} /{' '}
-                {selectedSchedule.schedule.maxSlots} slots
-              </div>
-            </div>
-          )}
-          <Form.Item
-            name="dateTime"
-            label="Date & Time"
-            rules={[{ required: true, message: 'Please select date and time' }]}
-          >
-            <DatePicker
-              showTime={{ format: 'HH:mm', minuteStep: 15 }}
-              format="YYYY-MM-DD HH:mm"
-              className="w-full"
-              placeholder="Select date and time"
-            />
-          </Form.Item>
+        setOpen={setIsEditScheduleOpen}
+        selectedSchedule={selectedSchedule}
+        onUpdateSuccess={handleEditScheduleSuccess}
+        onUpdateClassInfoSuccess={onUpdateClassInfoSuccess}
+      />
 
-          <Form.Item
-            name="maxSlots"
-            label="Max Slots"
-            rules={[
-              { required: true, message: 'Please input max slots' },
-              {
-                type: 'number',
-                min: 1,
-                max: 50,
-                message: 'Max slots must be between 1 and 50',
-              },
-            ]}
-          >
-            <InputNumber
-              min={1}
-              max={50}
-              className="w-full"
-              placeholder="Enter max slots"
-            />
-          </Form.Item>
-
-          <Form.Item className="mb-0">
-            <div className="flex justify-between">
-              <Button
-                onClick={() => {
-                  setIsEditScheduleOpen(false);
-                  editForm.resetFields();
-                  setSelectedSchedule(null);
-                }}
-              >
-                Cancel
-              </Button>
-              <div className="flex space-x-2">
-                <Button danger onClick={handleDeleteSchedule}>
-                  Delete Schedule
-                </Button>
-
-                <Button type="primary" htmlType="submit">
-                  Update Schedule
-                </Button>
-              </div>
-            </div>
-          </Form.Item>
-        </Form>
-      </Modal>
+      <AddNewScheduleModal
+        open={isAddScheduleOpen}
+        setOpen={setIsAddScheduleOpen}
+        selectedDate={selectedDate}
+        allCookingClasses={allCookingClasses}
+        onFetchCookingClasses={fetchCookingClasses}
+      />
     </div>
   );
 });
