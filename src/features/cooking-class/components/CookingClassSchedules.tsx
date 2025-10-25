@@ -344,7 +344,7 @@ const CookingClassSchedules = forwardRef<CookingClassSchedulesRef>((_, ref) => {
         try {
           await api.cookingClass.deleteCookingClassSchedules({
             requestBody: {
-              ids: [selectedSchedule.schedule.id],
+              id: selectedSchedule.schedule.id,
             },
           });
 

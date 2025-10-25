@@ -265,7 +265,7 @@ export default function AddEditCookingClass({
           </div>
 
           <div className="col-span-12">
-            <AppTextEditorFormField
+            <Form.Item
               name="description"
               label="Description"
               rules={[
@@ -274,9 +274,13 @@ export default function AddEditCookingClass({
                   message: 'Please input description',
                 },
               ]}
-              placeholder="Enter cooking class description"
-              isShowMediaFeatures={false}
-            />
+              className="col-span-12"
+            >
+              <Input.TextArea
+                rows={4}
+                placeholder="Enter cooking class description"
+              />
+            </Form.Item>
           </div>
 
           <div className="col-span-12">
