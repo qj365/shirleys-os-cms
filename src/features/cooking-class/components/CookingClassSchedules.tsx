@@ -164,6 +164,7 @@ const CookingClassSchedules = forwardRef<CookingClassSchedulesRef>((_, ref) => {
           title: cookingClass.name,
           start: schedule.dateTime,
           end: dayjs(schedule.dateTime).add(duration, 'minute').toISOString(),
+          maxSlots: schedule.maxSlots,
           editable: true,
           startEditable: true,
           durationEditable: false, // Don't allow resizing, only dragging
@@ -336,6 +337,7 @@ const CookingClassSchedules = forwardRef<CookingClassSchedulesRef>((_, ref) => {
                 </div>
                 {currentView === 'dayGridMonth' && (
                   <div className="text-xs">
+                    {eventInfo.event.extendedProps.maxSlots} slots -{' '}
                     {dayjs(eventInfo.event.start).format('HH:mm')} -{' '}
                     {dayjs(eventInfo.event.end).format('HH:mm')}
                   </div>

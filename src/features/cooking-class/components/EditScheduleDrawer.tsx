@@ -23,6 +23,8 @@ import dayjs from 'dayjs';
 import { SquarePen } from 'lucide-react';
 import { useEffect, useState, type Dispatch } from 'react';
 import AddEditCookingClass from './AddEditCookingClass';
+import { DEFAULT_PANEL_WIDTH } from '@/components/Overlays/constants';
+import AppTable from '@/components/AppTable';
 
 type Props = {
   open: boolean;
@@ -55,6 +57,7 @@ const EditScheduleDrawer = ({
   >([]);
   const [isLoadingBookings, setIsLoadingBookings] = useState(false);
   const [isEditClassOpen, setIsEditClassOpen] = useState(false);
+  const [isOpenEditScheduleModal, setIsOpenEditScheduleModal] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -86,7 +89,8 @@ const EditScheduleDrawer = ({
       });
 
       onUpdateSuccess?.();
-      onCancel();
+      form.resetFields();
+      setIsOpenEditScheduleModal(false);
     } catch (error) {
       toastErrorMessage(error);
     } finally {
@@ -172,8 +176,140 @@ const EditScheduleDrawer = ({
       <Drawer
         open={open}
         onClose={onCancel}
-        footer={overlayPanelFooter}
+        footer={
+          <>
+            <Button type="default" danger onClick={handleDeleteSchedule}>
+              Delete Schedule
+            </Button>
+          </>
+        }
         width={882}
+        title="Schedule Information"
+      >
+        {/* Display class information */}
+        {selectedSchedule?.cookingClass && (
+          <div className="mb-4 rounded-lg bg-gray-50 p-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-sm font-semibold text-gray-900">
+                  {selectedSchedule.cookingClass.name}
+                </div>
+                <div className="text-xs text-gray-500">
+                  Price:
+                  {formatDisplayCurrency(selectedSchedule.cookingClass.price)}
+                  <br />
+                  Duration: {selectedSchedule.cookingClass.duration} minutes
+                  <br />
+                  Address: {selectedSchedule.cookingClass.address}
+                </div>
+              </div>
+              <AppIconButton
+                icon={<SquarePen width={16} height={16} />}
+                onClick={() => setIsEditClassOpen(true)}
+              />
+            </div>
+          </div>
+        )}
+
+        {selectedSchedule?.schedule && (
+          <div className="mb-4 rounded-lg bg-gray-50 p-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-sm font-semibold text-gray-900">
+                  Schedule Information
+                </div>
+                <div className="text-xs text-gray-500">
+                  Date & Time:{' '}
+                  {dayjs(selectedSchedule.schedule.dateTime).format(
+                    'YYYY-MM-DD HH:mm'
+                  )}
+                  <br />
+                  Max slots: {selectedSchedule.schedule.maxSlots} slots
+                </div>
+              </div>
+              <AppIconButton
+                icon={<SquarePen width={16} height={16} />}
+                onClick={() => setIsOpenEditScheduleModal(true)}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Booking List */}
+        <div className="mb-4">
+          <h3 className="mb-2 text-sm font-semibold text-gray-900">
+            Bookings ({bookings.length})
+          </h3>
+          <AppTable
+            loading={isLoadingBookings}
+            dataSource={bookings}
+            pagination={false}
+            size="small"
+            rowKey="id"
+            scroll={{ x: 500 }}
+            mode="simple"
+            columns={[
+              {
+                title: 'Name',
+                dataIndex: 'fullname',
+                key: 'fullname',
+                width: 180,
+              },
+              {
+                title: 'Email',
+                dataIndex: 'email',
+                key: 'email',
+                width: 180,
+                ellipsis: true,
+              },
+              {
+                title: 'Phone',
+                dataIndex: 'phone',
+                key: 'phone',
+                width: 120,
+              },
+              {
+                title: 'Number Of People',
+                dataIndex: 'numberOfPeople',
+                key: 'numberOfPeople',
+                width: 200,
+                align: 'center',
+              },
+              {
+                title: 'Payment',
+                dataIndex: 'paymentStatus',
+                key: 'paymentStatus',
+                width: 100,
+                render: (status: string) => (
+                  <Tag
+                    color={
+                      status === 'paid'
+                        ? 'green'
+                        : status === 'pending'
+                          ? 'orange'
+                          : 'red'
+                    }
+                  >
+                    {status}
+                  </Tag>
+                ),
+              },
+              {
+                title: 'Booking For',
+                dataIndex: 'bookingFor',
+                key: 'bookingFor',
+                width: 200,
+              },
+            ]}
+          />
+        </div>
+      </Drawer>
+
+      <Drawer
+        open={isOpenEditScheduleModal}
+        onClose={() => setIsOpenEditScheduleModal(false)}
+        footer={overlayPanelFooter}
+        width={DEFAULT_PANEL_WIDTH}
         title="Edit Schedule"
       >
         <Form
@@ -182,35 +318,6 @@ const EditScheduleDrawer = ({
           layout="vertical"
           onFinish={onFinish}
         >
-          {/* Display class information */}
-          {selectedSchedule?.cookingClass && (
-            <div className="mb-4 rounded-lg bg-gray-50 p-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm font-semibold text-gray-900">
-                    {selectedSchedule.cookingClass.name} (
-                    {formatDisplayCurrency(selectedSchedule.cookingClass.price)}
-                    )
-                  </div>
-                  <div className="text-xs text-gray-500">
-                    Max slots:
-                    {selectedSchedule.schedule.maxSlots} slots
-                    <br />
-                    <span className="text-xs text-gray-500">
-                      Booked slots:{' '}
-                      {selectedSchedule.schedule.maxSlots -
-                        selectedSchedule.schedule.availableSlots}
-                    </span>
-                  </div>
-                </div>
-                <AppIconButton
-                  icon={<SquarePen width={16} height={16} />}
-                  onClick={() => setIsEditClassOpen(true)}
-                />
-              </div>
-            </div>
-          )}
-
           <div className="grid grid-cols-2 gap-4">
             <Form.Item
               name="dateTime"
@@ -270,90 +377,6 @@ const EditScheduleDrawer = ({
             Update Schedule
           </Button>
         </Form>
-
-        {/* Booking List */}
-        <div className="mb-4">
-          <h4 className="mb-2 text-sm font-semibold text-gray-900">
-            Bookings ({bookings.length})
-          </h4>
-          <Spin spinning={isLoadingBookings}>
-            {bookings.length > 0 ? (
-              <div className="max-h-60 overflow-y-auto">
-                <Table
-                  dataSource={bookings}
-                  pagination={false}
-                  size="small"
-                  rowKey="id"
-                  scroll={{ x: 768 }}
-                  columns={[
-                    {
-                      title: 'Name',
-                      dataIndex: 'fullname',
-                      key: 'fullname',
-                      width: 120,
-                    },
-                    {
-                      title: 'Email',
-                      dataIndex: 'email',
-                      key: 'email',
-                      width: 150,
-                      ellipsis: true,
-                    },
-                    {
-                      title: 'Phone',
-                      dataIndex: 'phone',
-                      key: 'phone',
-                      width: 120,
-                    },
-                    {
-                      title: 'People',
-                      dataIndex: 'numberOfPeople',
-                      key: 'numberOfPeople',
-                      width: 80,
-                      align: 'center',
-                    },
-                    {
-                      title: 'Payment',
-                      dataIndex: 'paymentStatus',
-                      key: 'paymentStatus',
-                      width: 100,
-                      render: (status: string) => (
-                        <Tag
-                          color={
-                            status === 'paid'
-                              ? 'green'
-                              : status === 'pending'
-                                ? 'orange'
-                                : 'red'
-                          }
-                        >
-                          {status}
-                        </Tag>
-                      ),
-                    },
-                    {
-                      title: 'Booking For',
-                      dataIndex: 'bookingFor',
-                      key: 'bookingFor',
-                      width: 120,
-                    },
-                    {
-                      title: 'Created',
-                      dataIndex: 'createdAt',
-                      key: 'createdAt',
-                      width: 100,
-                      render: (date: string) => dayjs(date).format('MM/DD'),
-                    },
-                  ]}
-                />
-              </div>
-            ) : (
-              <div className="rounded-lg bg-gray-50 p-4 text-center text-sm text-gray-500">
-                <Empty />
-              </div>
-            )}
-          </Spin>
-        </div>
       </Drawer>
 
       {/* Edit Class Modal */}
