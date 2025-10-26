@@ -158,7 +158,7 @@ export default function ProductList() {
               <Tooltip
                 placement="bottomLeft"
                 title={record.name}
-                className="block max-w-100 overflow-hidden text-ellipsis whitespace-nowrap"
+                className="line-clamp-2 overflow-hidden text-ellipsis"
               >
                 {record.name}
               </Tooltip>
