@@ -74,6 +74,13 @@ export const privateRoutes: TRoute[] = [
   },
 
   {
+    path: getPath('cookingClassListPage'),
+    element: createElement(
+      lazyImport(() => import('@/modules/Service/CookingClassListPage'))
+    ),
+  },
+
+  {
     path: getPath('notificationPage'),
     element: createElement(
       lazyImport(() => import('@/modules/Settings/NotificationPage')),

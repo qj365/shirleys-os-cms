@@ -17,6 +17,9 @@ const privatePaths = {
   orderDetailPage: (orderId: string, query?: string) =>
     `/product-management/orders/${orderId}${query ? `?${query}` : ''}`,
 
+  /**service **/
+  cookingClassListPage: (query?: string) =>
+    `/service/cooking-class${query ? `?${query}` : ''}`,
   /**settings **/
   notificationPage: () => '/setting/notification',
 };

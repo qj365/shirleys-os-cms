@@ -311,7 +311,7 @@ const ProductDetailPropertyConfig: React.FC<Props> = ({
                           </label>
                           <input
                             placeholder="Type value & press Enter to confirm a value"
-                            maxLength={30}
+                            maxLength={40}
                             onKeyDown={e => {
                               if (e.key === 'Enter' && e.currentTarget.value) {
                                 e.preventDefault();

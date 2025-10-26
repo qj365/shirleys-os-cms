@@ -8,7 +8,12 @@ import Editor from './Editor';
 import 'ckeditor5/ckeditor5.css';
 import { useRef } from 'react';
 
-const AppTextEditor = ({ value, placeholder, onBlur }: any) => {
+const AppTextEditor = ({
+  value,
+  placeholder,
+  onBlur,
+  isShowMediaFeatures = true,
+}: any) => {
   const editorRef = useRef(null);
 
   function uploadAdapter(loader: { file: Promise<File> }) {
@@ -58,8 +63,31 @@ const AppTextEditor = ({ value, placeholder, onBlur }: any) => {
       data={value}
       config={{
         licenseKey: 'GPL',
-        extraPlugins: [uploadPlugin],
+        extraPlugins: isShowMediaFeatures ? [uploadPlugin] : [],
         placeholder: placeholder ?? '',
+        toolbar: isShowMediaFeatures
+          ? undefined // Use default toolbar with all features
+          : {
+              items: [
+                'heading',
+                '|',
+                'bold',
+                'italic',
+                'underline',
+                '|',
+                'bulletedList',
+                'numberedList',
+                '|',
+                'outdent',
+                'indent',
+                '|',
+                'blockQuote',
+                'insertTable',
+                '|',
+                'undo',
+                'redo',
+              ],
+            },
       }}
       onBlur={(_, editor) => {
         const data = (editor as any)?.getData();

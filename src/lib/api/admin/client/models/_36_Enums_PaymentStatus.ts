@@ -2,8 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type AdminUpdateCookingClassScheduleDto = {
-  dateTime?: string;
-  maxSlots?: number;
-};
-
+export enum _36_Enums_PaymentStatus {
+  UNPAID = 'UNPAID',
+  PAID = 'PAID',
+  REFUNDED = 'REFUNDED',
+  EXPIRED = 'EXPIRED',
+}

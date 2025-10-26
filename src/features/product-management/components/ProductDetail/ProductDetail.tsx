@@ -148,6 +148,12 @@ const ProductDetail = () => {
       block: 'center',
     });
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
+
   const onFinish = async (values: ObjectType) => {
     try {
       setIsSubmitting(true);
@@ -298,6 +304,7 @@ const ProductDetail = () => {
         layout="vertical"
         scrollToFirstError
         onFinish={onFinish}
+        onKeyDown={handleKeyDown}
         initialValues={
           isCreateNewProduct
             ? {

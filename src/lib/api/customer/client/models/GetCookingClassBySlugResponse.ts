@@ -2,18 +2,21 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type AdminGetCookingClassesResponse = {
+export type GetCookingClassBySlugResponse = {
+  id: number;
+  name: string;
+  image: string;
+  price: number;
+  slug: string;
+  description: string;
+  whatToExpect: string;
+  duration: number;
+  address: string;
   cookingClassSchedules: Array<{
     availableSlots: number;
     maxSlots: number;
     dateTime: string;
     id: number;
   }>;
-  duration: number;
-  address: string;
-  price: number;
-  image: string;
-  name: string;
-  id: number;
 };
 

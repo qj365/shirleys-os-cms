@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type AdminUpdateCookingClassScheduleDto = {
-  dateTime?: string;
-  maxSlots?: number;
+export type SubscribeOutOfStockVariantsDto = {
+  variantOptionIds: Array<number>;
+  email: string;
 };
 

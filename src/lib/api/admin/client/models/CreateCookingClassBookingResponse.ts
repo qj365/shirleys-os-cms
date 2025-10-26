@@ -2,8 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type AdminUpdateCookingClassScheduleDto = {
-  dateTime?: string;
-  maxSlots?: number;
+export type CreateCookingClassBookingResponse = {
+  sessionId: string;
+  clientSecret: string;
+  publishableKey: string;
 };
 
