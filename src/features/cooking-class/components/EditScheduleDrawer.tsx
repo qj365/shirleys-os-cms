@@ -296,9 +296,9 @@ const EditScheduleDrawer = ({
                 render: (status: string) => (
                   <Tag
                     color={
-                      status === 'paid'
+                      status.toLowerCase() === 'paid'
                         ? 'green'
-                        : status === 'pending'
+                        : status.toLowerCase() === 'pending'
                           ? 'orange'
                           : 'red'
                     }
