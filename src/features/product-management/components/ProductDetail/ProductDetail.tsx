@@ -72,18 +72,6 @@ const validateVariants = (variants: Variant[]) => {
       return false;
     }
 
-    // Validate minOrder
-    if (
-      typeof variant.minOrder !== 'number' ||
-      variant.minOrder < 1 ||
-      variant.minOrder > 99999
-    ) {
-      message.error(
-        `Variant "${variant.name}": Min Order must be a number between 1 and 99999`
-      );
-      return false;
-    }
-
     return true;
   });
 };
@@ -206,7 +194,7 @@ const ProductDetail = () => {
                   compareAtPrice: item?.compareAtPrice,
                   image: item?.image,
                   stock: item?.stock,
-                  minOrder: item?.minOrder,
+                  minOrder: 1,
                 };
               }),
             }),
