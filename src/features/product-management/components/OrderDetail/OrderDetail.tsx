@@ -130,7 +130,8 @@ export default function OrderDetail() {
     total,
     orderInfo,
     orderCancelNote,
-  } = orderData;
+    shippingFee,
+  } = orderData || {};
 
   const getFulfillmentStatusColor = (status: string | null) => {
     switch (status) {
@@ -357,6 +358,14 @@ export default function OrderDetail() {
 
             {/* Price Breakdown - Right */}
             <div className="flex-1 space-y-3">
+              <div className="flex justify-between text-base font-semibold">
+                <span>Shipping Fee</span>
+                <span>
+                  {formatDisplayCurrency(
+                    shippingFee?.toFixed(2) as unknown as number
+                  )}
+                </span>
+              </div>
               <div className="flex justify-between text-lg font-semibold">
                 <span>Total</span>
                 <span>
