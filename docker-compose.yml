@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    image: shirleys-food-cms:latest
+    container_name: shirleys-food-cms
+    ports:
+      - '127.0.0.1:4001:3000'
+    env_file:
+      - /environments/production/.env
+    restart: unless-stopped
