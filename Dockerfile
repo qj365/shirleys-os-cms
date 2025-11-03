@@ -32,4 +32,4 @@ COPY --from=builder /app/dist ./dist
 EXPOSE 3000
 
 # Start the application with serve
-CMD ["serve", "-s", "dist"]
+CMD ["serve", "-s", "dist", "-l", "3000"]

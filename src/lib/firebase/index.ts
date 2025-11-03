@@ -20,9 +20,16 @@ export * from 'firebase/auth';
 // import type { ObjectType } from '@/utils/types';
 /* cSpell:disable */
 
-const firebaseConfig = JSON.parse(
-  import.meta.env.VITE_APP_FIRE_BASE_CONFIG || {}
-);
+const firebaseConfig = import.meta.env.VITE_APP_FIRE_BASE_CONFIG
+  ? JSON.parse(import.meta.env.VITE_APP_FIRE_BASE_CONFIG)
+  : {
+      apiKey: 'AIzaSyC_D0hZ952wqlB7__5Ni54CjeYkfqZjvHM',
+      authDomain: 'shirleysfoods-8a4cc.firebaseapp.com',
+      projectId: 'shirleysfoods-8a4cc',
+      storageBucket: 'shirleysfoods-8a4cc.firebasestorage.app',
+      messagingSenderId: '704710995807',
+      appId: '1:704710995807:web:3453e01e6fe05a04be10ea',
+    };
 /* cSpell:enable */
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
