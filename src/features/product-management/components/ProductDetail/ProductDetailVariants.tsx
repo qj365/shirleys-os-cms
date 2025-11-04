@@ -277,7 +277,7 @@ export const ProductDetailVariants = () => {
         return (
           <InputNumber
             min={0}
-            prefix="$"
+            prefix="£"
             step={0.01}
             precision={2}
             stringMode
@@ -300,7 +300,7 @@ export const ProductDetailVariants = () => {
         return (
           <InputNumber
             min={0}
-            prefix="$"
+            prefix="£"
             step={0.01}
             precision={2}
             stringMode
@@ -350,7 +350,7 @@ export const ProductDetailVariants = () => {
         return (
           <InputNumber
             min={0}
-            prefix="$"
+            prefix="£"
             step={0.01}
             precision={2}
             stringMode
